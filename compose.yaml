@@ -1,0 +1,30 @@
+services:
+  database:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: devhub_lexact-container
+    ports:
+      - "127.0.0.1:3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1477
+      MYSQL_DATABASE: devhub_lexact_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 1477
+
+  app:
+    image: php:latest
+    ports:
+      - "8800:8800"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - database
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: host.docker.internal
+      DB_PORT: 3306
+      DB_DATABASE: devhub_lexact_db
+      DB_USERNAME: root
+      DB_PASSWORD: 1477
+    command: [ "php", "-S", "0.0.0.0:8800", "-t", "/var/www/html/public" ]
