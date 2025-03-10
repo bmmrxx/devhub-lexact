@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'code_snippet')]
-class CodeSnippet
+#[ORM\Table(name: 'note')]
+class Note
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,10 +23,7 @@ class CodeSnippet
     private ?string $title;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $code;
-
-    #[ORM\Column(type: Types::STRING, length: 50)]
-    private ?string $language;
+    private ?string $content;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTime $created_at;
@@ -63,25 +60,14 @@ class CodeSnippet
         return $this;
     }
 
-    public function getCode(): ?string
+    public function getContent(): ?string
     {
-        return $this->code;
+        return $this->content;
     }
 
-    public function setCode(string $code): self
+    public function setContent(string $content): self
     {
-        $this->code = $code;
-        return $this;
-    }
-
-    public function getLanguage(): ?string
-    {
-        return $this->language;
-    }
-
-    public function setLanguage(string $language): self
-    {
-        $this->language = $language;
+        $this->content = $content;
         return $this;
     }
 
