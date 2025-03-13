@@ -6,13 +6,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class LoginController extends AbstractController
+class ProfileController extends AbstractController
 {
-    #[Route('/login', name: 'login')]
+    #[Route('/profile', name: 'profile')]
     public function loginPage(): Response
     {
         return $this->render(
-            'login.html.twig',
+            'profile.html.twig',
         );
     }
 }
