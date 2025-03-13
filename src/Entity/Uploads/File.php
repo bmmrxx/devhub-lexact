@@ -20,7 +20,7 @@ class File
     private ?User $user;
 
     #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'file')]
-    #[ORM\JoinTable(name: 'project')]
+    #[ORM\JoinTable(name: 'project_file')]
     private $projects;
 
     #[ORM\Column(type: Types::STRING)]
