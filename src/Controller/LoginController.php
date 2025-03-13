@@ -12,7 +12,7 @@ class LoginController extends AbstractController
     public function loginPage(): Response
     {
         return $this->render(
-            'login.html.twig',
+            'login/login.html.twig',
         );
     }
 }
