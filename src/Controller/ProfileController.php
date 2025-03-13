@@ -12,7 +12,7 @@ class ProfileController extends AbstractController
     public function loginPage(): Response
     {
         return $this->render(
-            'profile.html.twig',
+            'profile/profile.html.twig',
         );
     }
 }

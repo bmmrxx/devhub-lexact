@@ -12,7 +12,7 @@ class DashboardController extends AbstractController
     public function loginPage(): Response
     {
         return $this->render(
-            'dashboard.html.twig',
+            'dashboard/dashboard.html.twig',
         );
     }
 }
