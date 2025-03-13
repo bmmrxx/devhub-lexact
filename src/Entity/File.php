@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity]
 #[ORM\Table(name: 'file')]
 class File
@@ -25,12 +26,12 @@ class File
     #[ORM\Column(type: Types::STRING)]
     private string $name;
 
-    #[ORM\Column(type: Types::STRING)]
-    private string $uploadedAt;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\Datetime $uploaded_at;
 
     public function __construct()
     {
-
+        $this->uploaded_at = new \DateTime();
     }
 
     public function getId(): ?int
@@ -60,14 +61,14 @@ class File
         return $this;
     }
 
-    public function getUploadedAt(): string
+    public function getUploadedAt(): ?\Datetime
     {
-        return $this->uploadedAt;
+        return $this->uploaded_at;
     }
 
-    public function setUploadedAt(string $uploadedAt): self
+    public function setUploadedAt(\Datetime $uploaded_at): self
     {
-        $this->uploadedAt = $uploadedAt;
+        $this->uploaded_at = $uploaded_at;
         return $this;
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Enum\CategoryEnum;
+use App\Enum\CategoryUploadEnum;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,8 +25,8 @@ class InternUpload
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $date;
 
-    #[ORM\Column(type: 'string', enumType: CategoryEnum::class)]
-    private ?CategoryEnum $category;
+    #[ORM\Column(type: 'string', enumType: CategoryUploadEnum::class)]
+    private ?CategoryUploadEnum $category;
 
     public function __construct()
     {
@@ -71,12 +71,12 @@ class InternUpload
         return $this;
     }
 
-    public function getCategory(): ?CategoryEnum
+    public function getCategory(): ?CategoryUploadEnum
     {
         return $this->category;
     }
 
-    public function setCategory(CategoryEnum $category): self
+    public function setCategory(CategoryUploadEnum $category): self
     {
         $this->category = $category;
         return $this;

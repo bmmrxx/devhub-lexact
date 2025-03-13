@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\CategoryRoleEnum;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,18 +25,18 @@ class User implements UserInterface
     #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $password;
 
-    #[ORM\Column(type: Types::STRING, length: 255)]
-    private ?string $role;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTime $created_at;
+
+    #[ORM\Column(type: 'string', enumType: CategoryRoleEnum::class)]
+    private ?CategoryRoleEnum $role;
 
     public function __construct()
     {
         $this->created_at = new \DateTime();
-        $this->
 
     }
+
     public function getId(): int
     {
         return $this->id;
@@ -74,12 +75,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRole(): string
+    public function getRole(): ?CategoryRoleEnum
     {
         return $this->role;
     }
 
-    public function setRole(string $role): self
+    public function setRole(CategoryRoleEnum $role): self
     {
         $this->role = $role;
         return $this;
