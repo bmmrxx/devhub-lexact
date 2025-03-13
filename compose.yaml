@@ -1,46 +1,17 @@
-<<<<<<< HEAD
-
-services:
-###> doctrine/doctrine-bundle ###
-  database:
-    image: postgres:${POSTGRES_VERSION:-16}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
-    healthcheck:
-      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
-      timeout: 5s
-      retries: 5
-      start_period: 60s
-    volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
-
-volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
-=======
 services:
   database:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: devhub_lexact-container
+    image: mariadb:latest
+    container_name: devhub_lexact-database
     ports:
-      - "127.0.0.1:3306:3306"
+      - "3308:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 1477
       MYSQL_DATABASE: devhub_lexact_db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 1477
 
   app:
-    image: php:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8800:8800"
     volumes:
@@ -49,10 +20,8 @@ services:
       - database
     environment:
       DB_CONNECTION: mysql
-      DB_HOST: host.docker.internal
-      DB_PORT: 3306
+      DB_PORT: 3308
       DB_DATABASE: devhub_lexact_db
       DB_USERNAME: root
       DB_PASSWORD: 1477
     command: [ "php", "-S", "0.0.0.0:8800", "-t", "/var/www/html/public" ]
->>>>>>> d2ce24c (compose.yaml, docker & entity)

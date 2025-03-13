@@ -12,7 +12,7 @@ doctrine_migrations:
             table_name: 'doctrine_migration_versions'
             version_column_name: 'version'
             executed_at_column_name: 'executed_at'
-    connection: default
+    em: default
 
 
 
