@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    {% include 'dashboard/header.html.twig' %}
+    {% block homebody %}{% endblock %}
+    {% include 'dashboard/footer.html.twig' %}
+{% endblock %}
+{% block javascripts %}
+{% endblock %}

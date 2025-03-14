@@ -2,16 +2,15 @@
 
 {% block title %}Log in{% endblock %}
 
-
 {% block body %}
-<body class="login-page">
+<body = class="admin-login-page">
 <section class="login-page">
     <form>
         <h1 class="login-page">Login</h1>
         <div class="inputbox">
             <ion-icon name="mail-outline"></ion-icon>
             <input type="email" name="email" placeholder="Email">
-            <label for="">User</label>
+            <label for="">Admin</label>
         </div>
         <div class="inputbox">
             <ion-icon name="lock-closed-outline"></ion-icon>
@@ -24,7 +23,7 @@
         </div>
         <button class="login-page">Login</button>
         <div class="register">
-            <p>Login as admin? <a href="{{ path('admin-login') }}">click here</a></p>
+            <p>Login as user? <a href="{{ path('login') }}">click here</a></p>
         </div>
     </form>
 </section>
