@@ -12,7 +12,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile-New
+      dockerfile: Dockerfile
     ports:
       - "8800:8800"
     volumes:
