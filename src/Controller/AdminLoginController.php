@@ -12,7 +12,7 @@ class AdminLoginController extends AbstractController
     public function adminLoginPage(): Response
     {
         return $this->render(
-            'login/admin-login.html.twig',
+            'login/adminLogin.html.twig',
         );
     }
 }

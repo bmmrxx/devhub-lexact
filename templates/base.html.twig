@@ -15,12 +15,11 @@
   </head>
   <body class="bg-gray-100">
     <div class="flex">
-      {% block sidebar %}{% endblock %}
-
       <div class="flex-1 flex flex-col">
-        {% block header %}{% endblock %}
+        {% include 'dashboard/header.html.twig' %}
         <main class="p-6">{% block body %}{% endblock %}</main>
       </div>
     </div>
+    {% include 'dashboard/footer.html.twig' %}
   </body>
 </html>
