@@ -7,11 +7,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 1477
       MYSQL_DATABASE: devhub_lexact_db
+      PHP_MEMORY_LIMIT: 1024M
 
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-New
     ports:
       - "8800:8800"
     volumes:
