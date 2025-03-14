@@ -6,13 +6,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class ProfileController extends AbstractController
+class AdminLoginController extends AbstractController
 {
-    #[Route('/profile', name: 'profile')]
-    public function profilePage(): Response
+    #[Route('/admin-login', name: 'admin-login')]
+    public function adminLoginPage(): Response
     {
         return $this->render(
-            'dashboard/profile/profile.html.twig',
+            'login/admin-login.html.twig',
         );
     }
 }

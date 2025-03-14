@@ -1,0 +1,49 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block sidebar %}{% include 'sidebar.html.twig' %}{% endblock %}
+{% block header %}{% include 'header.html.twig' %}{% endblock %}
+
+{% block body %}
+<div class="grid grid-cols-3 gap-4 p-5">
+    <!-- Next Game -->
+    <div class="bg-white p-5 rounded-lg shadow-md col-span-1">
+        <h2 class="text-lg font-semibold">Next Game</h2>
+        <p class="text-gray-500">Serie A - 21:00, 11 November, 2020</p>
+        <div class="flex justify-between items-center mt-3">
+            <span>Juventus</span>
+            <span class="text-xl">⚽</span>
+            <span>Sassuolo</span>
+        </div>
+    </div>
+
+    <!-- Game Stats -->
+    <div class="bg-white p-5 rounded-lg shadow-md col-span-2">
+        <h2 class="text-lg font-semibold">Games Statistics</h2>
+        <p class="text-gray-500">Played: 8 | Victories: 6 | Draws: 1 | Lost: 1</p>
+    </div>
+
+    <!-- Standings -->
+    <div class="bg-white p-5 rounded-lg shadow-md col-span-3">
+        <h2 class="text-lg font-semibold">Standings</h2>
+        <table class="w-full mt-2">
+            <tr class="border-b">
+                <th class="text-left p-2">Team</th>
+                <th class="p-2">MP</th>
+                <th class="p-2">PTS</th>
+            </tr>
+            <tr class="border-b">
+                <td class="p-2">Juventus</td>
+                <td class="p-2">10</td>
+                <td class="p-2">19</td>
+            </tr>
+            <tr>
+                <td class="p-2">Atalanta</td>
+                <td class="p-2">10</td>
+                <td class="p-2">18</td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock %}
