@@ -9,10 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class UploadController extends AbstractController
 {
     #[Route('/upload', name: 'upload')]
-    public function homePage(): Response
+    public function uploadPage(): Response
     {
         return $this->render(
-            'dashboard/home.html.twig',
+            'dashboard/uploads/upload.html.twig',
         );
     }
 }

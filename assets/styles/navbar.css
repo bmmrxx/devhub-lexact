@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d664e07 (navbar WIP)
 .navbar-scroll .nav-link,
 .navbar-scroll .navbar-toggler-icon,
 .navbar-scroll .navbar-brand {
@@ -27,6 +30,7 @@
   font-size: 1.75rem;
   letter-spacing: 3px;
 }
+<<<<<<< HEAD
 =======
 /* The side navigation menu */
 .sidenav {
@@ -78,3 +82,7 @@
     .sidenav a {font-size: 18px;}
   }
 >>>>>>> e239b70 (Controllers & templates)
+=======
+
+#0091d3
+>>>>>>> d664e07 (navbar WIP)
