@@ -1,11 +1,14 @@
 doctrine_migrations:
     migrations_paths:
 <<<<<<< HEAD
+<<<<<<< HEAD
         # namespace is arbitrary but should be different from App\Migrations
         # as migrations classes should NOT be autoloaded
         'DoctrineMigrations': '%kernel.project_dir%/migrations'
     enable_profiler: false
 =======
+=======
+>>>>>>> d664e075a17421c70a80815d4279db3c4ec8eaef
         'DoctrineMigrations': '%kernel.project_dir%/migrations'
     storage:
         table_storage:
@@ -25,5 +28,9 @@ doctrine_migrations:
 # SQL import soort van
 
 # Schrijf entity files voor elke tabel in het project
+<<<<<<< HEAD
 # 
 >>>>>>> d2ce24c (compose.yaml, docker & entity)
+=======
+# 
+>>>>>>> d664e075a17421c70a80815d4279db3c4ec8eaef
