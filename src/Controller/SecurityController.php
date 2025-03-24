@@ -19,14 +19,17 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('login/login.html.twig', [
-            'last_username' => $lastUsername,
             'error' => $error,
+            'last_username' => $lastUsername,
+
+            'csrf_token_intention' => 'authenticate',
+            'target_path' => $this->generateUrl('home'),
         ]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new \LogicException('');
     }
 }
