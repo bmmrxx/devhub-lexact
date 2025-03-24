@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Uploads;
 
 use App\Enum\CategoryUploadEnum;
 use Doctrine\DBAL\Types\Types;

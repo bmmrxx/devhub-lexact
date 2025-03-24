@@ -2,18 +2,24 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Uploads\CodeSnippet;
+use App\Entity\Uploads\File;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
-class AdminController extends AbstractDashboardController
+class DashboardController extends AbstractDashboardController
 {
     public function index(): Response
     {
-        return parent::index();
+        $routeBuilder = $this->container->get(AdminUrlGenerator::class);
+        $url = $routeBuilder->setController(CodeSnippetCrudController::class)->generateUrl();
+
+        return $this->redirect($url);
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
@@ -44,7 +50,8 @@ class AdminController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToRoute('Dashboard', 'fa fa-home', 'admin');
+        yield MenuItem::linkToCrud('Code Snippet', 'fas fa-list', CodeSnippet::class);
+        yield MenuItem::linkToCrud('File', 'fas fa-list', File::class);
     }
 }
