@@ -8,11 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class LoginController extends AbstractController
 {
-    #[Route('/login', name: 'login')]
-    public function loginPage(): Response
-    {
-        return $this->render(
-            'login/login.html.twig',
-        );
-    }
+    // #[Route('/login', name: 'login')]
+    // public function loginPage(): Response
+    // {
+    //     return $this->render(
+    //         'login/login.html.twig',
+    //     );
+    // }
 }

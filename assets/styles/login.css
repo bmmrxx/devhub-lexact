@@ -46,7 +46,7 @@ h1.login-page {
     max-width: 310px;
     border-bottom: 2px solid #fff;
 }
-.inputbox label {
+.inputbox ::placeholder {
     position: absolute;
     top: 50%;
     left: 5px;
@@ -114,17 +114,10 @@ button.login-page{
 button.login-page:hover {
     background-color: rgba(255, 255, 255, 0.5);
 }
-.register {
-    font-size: 0.9rem;
-    color: #fff;
+
+.login-page .error {
+    margin-top: 1rem;
+    color: #e60000;
     text-align: center;
-    margin: 25px 0 10px;
-}
-.register p a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: 600;
-}
-.register p a:hover {
-    text-decoration: underline;
+    font-size: 15px;
 }
