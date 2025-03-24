@@ -37,7 +37,7 @@ body {
         position: relative;
         &:hover,
         &:focus {
-          color: gray;
+          color: white;
         }
       }
       &.active > a {
