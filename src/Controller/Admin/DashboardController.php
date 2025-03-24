@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\HomeController;
 use App\Entity\Uploads\CodeSnippet;
 use App\Entity\Uploads\File;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
@@ -16,10 +17,7 @@ class DashboardController extends AbstractDashboardController
 {
     public function index(): Response
     {
-        $routeBuilder = $this->container->get(AdminUrlGenerator::class);
-        $url = $routeBuilder->setController(CodeSnippetCrudController::class)->generateUrl();
-
-        return $this->redirect($url);
+        return $this->redirectToRoute('home');
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
@@ -45,12 +43,12 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Html');
+            ->setTitle('Control panel');
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToRoute('Dashboard', 'fa fa-home', 'admin');
+        yield MenuItem::linkToRoute('Home', 'fa fa-home', 'home');
         yield MenuItem::linkToCrud('Code Snippet', 'fas fa-list', CodeSnippet::class);
         yield MenuItem::linkToCrud('File', 'fas fa-list', File::class);
     }

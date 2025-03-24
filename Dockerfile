@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    libicu-dev \
     git \
     curl \
     libcurl4-openssl-dev \
@@ -12,9 +13,12 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install mysqli pdo_mysql gd curl intl \
     && apt-get clean
 
+
 # Configure Git with user email and name (auto sign-in)
 RUN git config --global user.email "mitzbo@outlook.com" \
     && git config --global user.name "bmmrxx"
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN bin/console ca:clean && d:m:M --no-interaction 

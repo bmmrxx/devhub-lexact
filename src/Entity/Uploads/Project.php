@@ -2,6 +2,7 @@
 
 namespace App\Entity\Uploads;
 
+use App\Entity\User;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,7 +27,7 @@ class Project
 
     public function __construct()
     {
-        
+
     }
 
     public function getId(): ?int
