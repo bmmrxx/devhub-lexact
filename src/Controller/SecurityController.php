@@ -24,6 +24,17 @@ class SecurityController extends AbstractController
 
             'csrf_token_intention' => 'authenticate',
             'target_path' => $this->generateUrl('home'),
+
+            // 
+
+            // whether to enable or not the "forgot password?" link (default: false)
+            'forgot_password_enabled' => true,
+
+            // the path (i.e. a relative or absolute URL) to visit when clicking the "forgot password?" link (default: '#')
+            'forgot_password_path' => $this->generateUrl('app_password_reset', ['token' => '???']),
+
+            // the label displayed for the "forgot password?" link (the |trans filter is applied to it)
+            'forgot_password_label' => 'Forgot your password?',
         ]);
     }
 

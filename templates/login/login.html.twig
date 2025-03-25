@@ -6,12 +6,6 @@
 <body class="login-page">
 <section class="login-page">
     <form action="{{ path('app_login') }}"method="post">
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
-
         <h1 class="login-page">Login</h1>
         <div class="inputbox">
         <input type="email" value="{{ last_username }}" name="_username" id="username" placeholder="E-mail" class="form-control" autocomplete="email" required autofocus>
@@ -22,7 +16,7 @@
         <input type="hidden" name="_csrf_token"
                value="{{ csrf_token('authenticate') }}"
         >
-            <div class="checkbox mb-3">
+            <div class="remember mb-3">
                 <input type="checkbox" name="_remember_me" id="_remember_me">
                 <label for="_remember_me">Remember me</label>
             </div>
@@ -30,6 +24,9 @@
         <button class="login-page" type="submit">
             Login
         </button>
+        <div class="forget">
+            <a href="{{ path('app_password_reset') }}">Forgot password?</a>
+        </div>
         {% if error %}
             <div class="login-page error" href="{{ path('app_login') }}">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}

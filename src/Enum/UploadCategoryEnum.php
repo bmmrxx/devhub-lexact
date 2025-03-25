@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum CategoryUploadEnum: string
+enum UploadCategoryEnum: string
 {
     case DAILY = 'daily';
     case SCHOOL = 'school';

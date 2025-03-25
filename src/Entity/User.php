@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'user')]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -29,8 +29,8 @@ class User implements UserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTime $created_at;
 
-    #[ORM\Column(type: 'string', enumType: CategoryRoleEnum::class)]
-    private ?CategoryRoleEnum $role;
+    #[ORM\Column(type: Types::JSON)]
+    private array $roles = [];
 
     public function __construct()
     {
@@ -76,17 +76,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRole(): ?CategoryRoleEnum
-    {
-        return $this->role;
-    }
-
-    public function setRole(CategoryRoleEnum $role): self
-    {
-        $this->role = $role;
-        return $this;
-    }
-
     public function getCreatedAt(): \DateTime
     {
         return $this->created_at;
@@ -100,7 +89,7 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
-        return [$this->role];
+        return $this->roles;
     }
 
     public function getUserIdentifier(): string
