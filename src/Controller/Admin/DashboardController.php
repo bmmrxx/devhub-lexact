@@ -17,7 +17,7 @@ class DashboardController extends AbstractDashboardController
 {
     public function index(): Response
     {
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('admin_file_index');
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
