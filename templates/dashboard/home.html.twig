@@ -6,17 +6,17 @@
             <div class="name">
                 Home
             </div>
-        {% if app.user %}
+        {# {% if app.user %}
             <div class="mb-3">
                 You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
             </div>
-        {% endif %}
+        {% endif %} #}
             <ul>
                 <li class="active"><a href="#">Nieuw</a>
                     <ul>
-                        <li><a href="#0">Projecten</a></li>
-                        <li><a href="#0">Uploads</a></li>
-                        <li><a href="#0">Berichten</a></li>
+                        {# <li><a href="{{ path('project') }}">Projecten</a></li> #}
+                        <li><a href="{{ path('upload') }}">Uploads</a></li>
+                        {# <li><a href="{{ path('message_index') }}">Berichten</a></li> #}
                     </ul>
                 </li>
                 <li><a href="#0">Code snippets</a></li>
@@ -37,44 +37,16 @@
         <main>
             <div class="content-columns">
                 <div class="col">
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
+                    <div class="item">Recente projecten</div>
                 </div>
                 <div class="col">
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
+                    <div class="item">Feedback</div>
                 </div>
                 <div class="col">
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
+                    <div class="item">Meldingen</div>
                 </div>
                 <div class="col">
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
+                    <div class="item">Git commit counter</div>
                 </div>
             </div>
         </main>
