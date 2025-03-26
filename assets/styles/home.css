@@ -2,7 +2,7 @@ body {
   background: rgba(137, 144, 159, 0.7); /* Donkerder en minder doorzichtig */
   padding: 2rem 0 0 2rem;
   font-size: 12px;
-  /* height: 100vh; */
+  height: 100vh;
   margin: 0;
   overflow: hidden;
 }
@@ -45,7 +45,7 @@ body {
           to right,
           rgba(128, 158, 201, 0.5),
           transparent
-        ); /* Behoud transparantie in hover */
+        );
         &::before {
           content: "";
           position: absolute;
