@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'user-project')]
+#[ORM\Table(name: 'user_project')]
 class UserProject
 {
     #[ORM\Id]
