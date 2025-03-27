@@ -1,54 +1,71 @@
 {% extends 'dashboard/index.html.twig' %}
 
 {% block body %}
-    <div class="site-wrap">
-        <nav class="site-nav">
-            <div class="name">
-                Home
-            </div>
-        {# {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %} #}
-            <ul>
-                <li class="active"><a href="#">Nieuw</a>
-                    <ul>
-                        {# <li><a href="{{ path('project') }}">Projecten</a></li> #}
-                        <li><a href="{{ path('upload') }}">Uploads</a></li>
-                        {# <li><a href="{{ path('message_index') }}">Berichten</a></li> #}
-                    </ul>
-                </li>
-                <li><a href="#0">Code snippets</a></li>
-                <li><a href="#0">Projects</a></li>
-                    <ul>
-                        <li><a href="#0">Alle projecten </a></li>
-                        <li><a href="#0">Recente projecte</a></li>
-                    </ul>
-                <li><a href="#0">Notes</a></li>
-                <li><a href="#0">Feedback</a></li>
-                <li><a href="#0">Contact</a></li>
-            </ul>
+<div
+	class="site-wrap">
+<div class="site-nav">
+	<ul class="site-nav-list">
+		<li class="site-nav-list-item">
+			<a href="#">Planning</a>
+			{# <li><a href="{{ path('project') }}">Projecten</a></li> #}
+		</li>
 
-            <div class="note">
-            </div>
-        </nav>
+</li>
+<li class="site-nav-list-item">
+	<a href="{{ path('upload') }}">Uploads</a>
+</li>
+{# <li><a href="{{ path('message_index') }}">Berichten</a></li> #}
 
-        <main>
-            <div class="content-columns">
-                <div class="col">
-                    <div class="item"></div>
-                </div>
-                <div class="col">
-                    <div class="item"></div>
-                </div>
-                <div class="col">
-                    <div class="item"></div>
-                </div>
-                <div class="col">
-                    <div class="item"></div>
-                </div>
-            </div>
-        </main>
-    </div>
-{% endblock %}
+{# </li> #}
+<li class="site-nav-list-item">
+	<a href="#0">Code snippets</a>
+</li>
+<li class="site-nav-list-item">
+	<a href="#0">Projects</a>
+</li>
+
+</ul>
+
+<ul class="site-nav-list">
+	<li class="site-nav-list-item">
+		<a href="#0">Alle projecten</a>
+	</li>
+
+</li>
+
+<li class="site-nav-list-item">
+	<a href="#0">Recente projecten</a>
+</li></ul>
+
+<ul class="site-nav-list">
+	<li class="site-nav-list-item">
+		<a href="#0">Notes</a>
+	</li>
+	<li class="site-nav-list-item">
+		<a href="#0">Feedback</a>
+	</li>
+	<li class="site-nav-list-item">
+		<a href="#0">Contact</a>
+	</li>
+</ul>
+
+</div>
+
+</div>
+<div class="content-columns">
+	<div class="col">
+		<div class="item"></div>
+	</div>
+	<div class="col">
+		<div class="item"></div>
+	</div>
+	<div class="col">
+		<div class="item"></div>
+	</div>
+	<div class="col">
+		<div class="item"></div>
+	</div>
+</div>
+
+</div>{% endblock %}
+

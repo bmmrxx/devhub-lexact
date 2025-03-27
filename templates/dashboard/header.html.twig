@@ -1,36 +1,44 @@
 {% block header %}
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top mask-custom shadow-0">
-      <div class="container-fluid">
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top mask-custom shadow-0">
+		<div class="container-fluid">
 
-        <a class="navbar-brand" href="#!"><span style="color: #404a99;">Devhub</span>
-          <span><img src="{{ asset('styles/images/logo-lexact-web-crop.png') }}" alt="logo-lexact" width="100" height="25"></span>
-        </a>
-        
-        <button class="navbar-toggler" type="button" data-mdb-collapse-init
-          data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-          aria-label="Toggle navigation">
-          <i class="fas fa-bars"></i>
-        </button>
+			<a class="navbar-brand" href="#!">
+				<span style="color: #404a99;">Devhub</span>
+				<span><img src="{{ asset('styles/images/logo-lexact-web-crop.png') }}" alt="logo-lexact" width="100" height="25"></span>
+			</a>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="{{ path('home') }}">Dashboard</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ path('profile') }}">Profile</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ path('upload') }}">Uploads</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ path('settings') }}">Settings</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#!">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+			<button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<i class="fas fa-bars"></i>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('home') }}">Dashboard</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('profile') }}">Profile</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('upload') }}">Uploads</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('settings') }}">Settings</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+					</li>
+					<li class="nav-item">
+						{% if app.user %}
+							<div class="nav-link">
+								You are logged in as
+								{{ app.user.userIdentifier }}
+								
+							</div>
+						{% endif %}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 {% endblock %}
