@@ -5,11 +5,12 @@ namespace App\Entity;
 use App\Enum\CategoryRoleEnum;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'user')]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,7 +20,7 @@ class User implements UserInterface
     #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $name;
 
-    #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
+    #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     private ?string $email;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
@@ -28,8 +29,8 @@ class User implements UserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTime $created_at;
 
-    #[ORM\Column(type: 'string', enumType: CategoryRoleEnum::class)]
-    private ?CategoryRoleEnum $role;
+    #[ORM\Column(type: Types::JSON)]
+    private array $roles = [];
 
     public function __construct()
     {
@@ -75,17 +76,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRole(): ?CategoryRoleEnum
-    {
-        return $this->role;
-    }
-
-    public function setRole(CategoryRoleEnum $role): self
-    {
-        $this->role = $role;
-        return $this;
-    }
-
     public function getCreatedAt(): \DateTime
     {
         return $this->created_at;
@@ -99,16 +89,17 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
-        return [$this->role];
-    }
-
-    public function eraseCredentials(): void
-    {
-
+        return $this->roles;
     }
 
     public function getUserIdentifier(): string
     {
         return $this->email;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }

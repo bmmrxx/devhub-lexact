@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Resources;
 
-use App\Enum\CategoryUploadEnum;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'intern_upload')]
-class InternUpload
+#[ORM\Table(name: 'note')]
+class Note
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,18 +19,18 @@ class InternUpload
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user;
 
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $title;
+
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTime $date;
-
-    #[ORM\Column(type: 'string', enumType: CategoryUploadEnum::class)]
-    private ?CategoryUploadEnum $category;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTime $created_at;
 
     public function __construct()
     {
-        $this->date = new \DateTime();
+        $this->created_at = new \DateTime();
     }
 
     public function getId(): ?int
@@ -49,6 +49,17 @@ class InternUpload
         return $this;
     }
 
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
+
     public function getContent(): ?string
     {
         return $this->content;
@@ -60,25 +71,14 @@ class InternUpload
         return $this;
     }
 
-    public function getDate(): ?\DateTime
+    public function getCreatedAt(): ?\DateTime
     {
-        return $this->date;
+        return $this->created_at;
     }
 
-    public function setDate(\DateTime $date): self
+    public function setCreatedAt(\DateTime $created_at): self
     {
-        $this->date = $date;
-        return $this;
-    }
-
-    public function getCategory(): ?CategoryUploadEnum
-    {
-        return $this->category;
-    }
-
-    public function setCategory(CategoryUploadEnum $category): self
-    {
-        $this->category = $category;
+        $this->created_at = $created_at;
         return $this;
     }
 }

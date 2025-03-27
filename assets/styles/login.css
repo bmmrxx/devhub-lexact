@@ -10,19 +10,11 @@ body.login-page {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-image: url(images/white_cherry_blossom.png);
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-image: url(images/white_cherry_blossom.png)!important;
+    background-repeat: no-repeat!important;
+    background-size: cover!important;
 }
-body.admin-login-page {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-image: url(images/white_cherry_blossom_2.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-}
+
 section.login-page {
     position: relative;
     max-width: 400px;
@@ -46,7 +38,7 @@ h1.login-page {
     max-width: 310px;
     border-bottom: 2px solid #fff;
 }
-.inputbox label {
+.inputbox ::placeholder {
     position: absolute;
     top: 50%;
     left: 5px;
@@ -82,22 +74,26 @@ input:valid ~ label {
     font-size: 1rem;
     color: #fff;
     display: flex;
-    justify-content: space-between;
-}
-.forget label {
-    display: flex;
-    align-items: center;
-}
-.forget label input {
-    margin-right: 3px;
+    justify-content: center;
 }
 .forget a {
     color: #fff;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 400;
 }
 .forget a:hover {
     text-decoration: underline;
+}
+
+.remember{
+    margin: 35px 0;
+    font-size: 1rem;
+    color: #fff;
+    display: flex;
+    justify-content: left;
+}
+.remember label {
+    padding: 5px;
 }
 button.login-page{
     width: 100%;
@@ -110,21 +106,15 @@ button.login-page{
     font-size: 1rem;
     font-weight: 600;
     transition: all 0.4s ease;
+    padding-top: 5px;
 }
 button.login-page:hover {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.25);
 }
-.register {
-    font-size: 0.9rem;
-    color: #fff;
+
+.login-page .error {
+    margin-top: 1rem;
+    color: #e60000;
     text-align: center;
-    margin: 25px 0 10px;
-}
-.register p a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: 600;
-}
-.register p a:hover {
-    text-decoration: underline;
+    font-size: 15px;
 }

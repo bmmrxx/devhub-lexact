@@ -1,32 +1,36 @@
-{% extends 'login/baseLogin.html.twig' %}
+{% extends 'login/base-login.html.twig' %}
 
-{% block title %}Log in{% endblock %}
-
+{% block title %}Login{% endblock %}
 
 {% block body %}
 <body class="login-page">
 <section class="login-page">
-    <form>
+    <form action="{{ path('app_login') }}"method="post">
         <h1 class="login-page">Login</h1>
         <div class="inputbox">
-            <ion-icon name="mail-outline"></ion-icon>
-            <input type="email" name="email" placeholder="Email">
-            <label for="">User</label>
+        <input type="email" value="{{ last_username }}" name="_username" id="username" placeholder="E-mail" class="form-control" autocomplete="email" required autofocus>
         </div>
         <div class="inputbox">
-            <ion-icon name="lock-closed-outline"></ion-icon>
-            <input type="password" name="password" placeholder="Password">
-            <label for="">Password</label>
+        <input type="password" name="_password" id="password" placeholder="Wachtwoord" class="form-control" autocomplete="current-password" required>
         </div>
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+            <div class="remember mb-3">
+                <input type="checkbox" name="_remember_me" id="_remember_me">
+                <label for="_remember_me">Remember me</label>
+            </div>
+
+        <button class="login-page" type="submit">
+            Login
+        </button>
         <div class="forget">
-            <label for=""><input type="checkbox">Remember</label>
-            <a href="#">Forgot password?</a>
+            <a href="{{ path('app_password_reset') }}">Forgot password?</a>
         </div>
-        <button class="login-page">Login</button>
-        <div class="register">
-            <p>Login as admin? <a href="{{ path('admin-login') }}">click here</a></p>
-        </div>
+        {% if error %}
+            <div class="login-page error" href="{{ path('app_login') }}">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
     </form>
-</section>
+    </section>
 </body>
 {% endblock %}
