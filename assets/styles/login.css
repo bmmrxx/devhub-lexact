@@ -11,8 +11,8 @@ body.login-page {
     justify-content: center;
     min-height: 100vh;
     background-image: url(images/white_cherry_blossom.png)!important;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-repeat: no-repeat!important;
+    background-size: cover!important;
 }
 
 section.login-page {

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Entity\Uploads;
+namespace App\Entity\Resources;
 
 use App\Entity\User;
+use App\Entity\Upload\File;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,7 +20,7 @@ class Project
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user;
 
-    #[ORM\ManyToMany(targetEntity: File::class, mappedBy: 'project')]
+    #[ORM\OneToMany(targetEntity: File::class, mappedBy: 'project')]
     private $file;
 
     #[ORM\Column(type: Types::STRING)]

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Uploads;
+namespace App\Entity\Resources;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

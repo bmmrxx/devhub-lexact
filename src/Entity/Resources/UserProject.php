@@ -1,50 +1,30 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Resources;
 
-use App\Entity\Uploads\File;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'visibility_file_user')]
-class VisibilityFileUser
+#[ORM\Table(name: 'user-project')]
+class UserProject
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
     private ?int $id;
 
-    #[ORM\ManyToOne(targetEntity: File::class)]
-    #[ORM\JoinColumn(name: 'file_id', referencedColumnName: 'id', nullable: false)]
-    private ?File $file;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user;
 
-    #[ORM\Column(type: Types::STRING)]
-    private string $name;
-
-    public function __construct()
-    {
-        // Optional initialization logic, if needed.
-    }
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $name;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getFile(): ?File
-    {
-        return $this->file;
-    }
-
-    public function setFile(File $file): self
-    {
-        $this->file = $file;
-        return $this;
     }
 
     public function getUser(): ?User
@@ -58,7 +38,7 @@ class VisibilityFileUser
         return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
