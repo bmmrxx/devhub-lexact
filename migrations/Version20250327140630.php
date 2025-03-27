@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250327133802 extends AbstractMigration
+final class Version20250327140630 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,8 +20,8 @@ final class Version20250327133802 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE user-project (id INT UNSIGNED AUTO_INCREMENT NOT NULL, user_id INT UNSIGNED NOT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_99CB5809A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE user-project ADD CONSTRAINT FK_99CB5809A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+        $this->addSql('CREATE TABLE user_project (id INT UNSIGNED AUTO_INCREMENT NOT NULL, user_id INT UNSIGNED NOT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_77BECEE4A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE user_project ADD CONSTRAINT FK_77BECEE4A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE visibility_file_user DROP FOREIGN KEY FK_6DFF551393CB796C');
         $this->addSql('ALTER TABLE visibility_file_user DROP FOREIGN KEY FK_6DFF5513A76ED395');
         $this->addSql('ALTER TABLE intern_upload DROP FOREIGN KEY FK_5692405FA76ED395');
@@ -35,6 +35,7 @@ final class Version20250327133802 extends AbstractMigration
         $this->addSql('ALTER TABLE file ADD project_id INT UNSIGNED NOT NULL, ADD file_path LONGTEXT NOT NULL, ADD file_type VARCHAR(50) NOT NULL, CHANGE uploaded_at created_at DATE NOT NULL');
         $this->addSql('ALTER TABLE file ADD CONSTRAINT FK_8C9F3610166D1F9C FOREIGN KEY (project_id) REFERENCES project (id)');
         $this->addSql('CREATE INDEX IDX_8C9F3610166D1F9C ON file (project_id)');
+        $this->addSql('ALTER TABLE note ADD catagory JSON NOT NULL COMMENT \'(DC2Type:json)\'');
     }
 
     public function down(Schema $schema): void
@@ -50,10 +51,11 @@ final class Version20250327133802 extends AbstractMigration
         $this->addSql('ALTER TABLE code_snippet ADD CONSTRAINT FK_AEBBC849A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE project_file ADD CONSTRAINT FK_B50EFE08166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE project_file ADD CONSTRAINT FK_B50EFE0893CB796C FOREIGN KEY (file_id) REFERENCES file (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE user-project DROP FOREIGN KEY FK_99CB5809A76ED395');
-        $this->addSql('DROP TABLE user-project');
+        $this->addSql('ALTER TABLE user_project DROP FOREIGN KEY FK_77BECEE4A76ED395');
+        $this->addSql('DROP TABLE user_project');
         $this->addSql('ALTER TABLE file DROP FOREIGN KEY FK_8C9F3610166D1F9C');
         $this->addSql('DROP INDEX IDX_8C9F3610166D1F9C ON file');
         $this->addSql('ALTER TABLE file DROP project_id, DROP file_path, DROP file_type, CHANGE created_at uploaded_at DATE NOT NULL');
+        $this->addSql('ALTER TABLE note DROP catagory');
     }
 }

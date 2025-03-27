@@ -28,6 +28,9 @@ class Note
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTime $created_at;
 
+    #[ORM\Column(type: Types::JSON)]
+    private array $catagory = [];
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
