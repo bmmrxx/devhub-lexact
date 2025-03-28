@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Resources;
+namespace App\Entity\upload;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,7 +29,7 @@ class Note
     private ?\DateTime $created_at;
 
     #[ORM\Column(type: Types::JSON)]
-    private array $catagory = [];
+    private array $category = [];
 
     public function __construct()
     {
