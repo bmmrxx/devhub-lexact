@@ -23,6 +23,7 @@
 <a class="nav-link" href="{{ path('file') }}">Notes</a>
 
 
+
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('settings') }}">Settings</a>
@@ -34,8 +35,8 @@
 						{% if app.user %}
 							<div class="nav-link">
 								You are logged in as
-								{{ app.user.userIdentifier }}
-								
+{{ app.user.name }}
+
 							</div>
 						{% endif %}
 					</li>

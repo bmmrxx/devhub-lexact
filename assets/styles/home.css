@@ -8,21 +8,16 @@ body {
 }
 
 .content-columns {
-  flex-grow: 1;
+  display: flex;
+  gap: 1rem;
   padding: 2rem;
   margin-top: 25px;
   overflow-y: auto;
-  padding: 11rem;
   flex-grow: 1;
 }
 
-.content-columns {
-  display: flex;
-  gap: 1rem;
-}
-
 .col {
-  width: 200px;
+  width: 100px;
   padding: 1rem;
   background: rgba(235, 236, 238, 0.9);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -37,5 +32,3 @@ body {
   font-size: 1.2rem;
   text-align: center;
 }
-
-
