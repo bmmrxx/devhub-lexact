@@ -23,12 +23,3 @@ body {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
 }
-
-.item {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  min-height: 50px;
-  border-radius: 5px;
-  font-size: 1.2rem;
-  text-align: center;
-}
