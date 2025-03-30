@@ -1,5 +1,5 @@
 import './bootstrap.js';
-import './notes.js';
+import './note.js';
 /*
  * Welcome to your app's main JavaScript file!
  *

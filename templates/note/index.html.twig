@@ -1,47 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Notes App
+{% block title %}Notes
 {% endblock %}
 
-
 {% block body %}
-	<div class="notes-app">
-		<header class="app-header">
-			<h1 class="app-title">My Notes</h1>
-			<div class="app-controls">
-				<button id="newNoteBtn" class="btn-primary">
-					<i class="icon-plus"></i>
-					New Note
-				</button>
-				<button id="themeToggle" class="btn-icon" aria-label="Toggle theme">
-					<i class="icon-theme"></i>
-				</button>
-			</div>
-		</header>
+	<div class="notes-container">
+		<div class="note-form">
+			<select id="noteCategory">
+				<option value="note">Note</option>
+				<option value="question">Question</option>
+			</select>
+			<input type="text" id="noteTitle" placeholder="Title">
+			<textarea id="noteContent" placeholder="Write your note here... Use (language//code) for code blocks"></textarea>
+			<button id="saveNote">Save</button>
+		</div>
 
+		<div class="notes-list">
+			{% for note in notes %}
+				<div class="note-card" data-category="{{ note.category }}">
+					<div class="note-header">
+						<h3>{{ note.title }}</h3>
+						<span class="note-meta">
+							{{ note.created_at|date('Y-m-d H:i') }}
+							|
+							{{ note.user.name }}
+							|
+							{{ note.category }}
+						</span>
+					</div>
 
-		<main class="app-main">
-			<div id="noteEditor" class="note-editor hidden">
-				<input type="text" id="noteTitle" class="note-title" placeholder="Note title">
-				<textarea id="noteContent" class="note-content" placeholder="Start writing..."></textarea>
-				<div class="editor-actions">
-					<button id="saveNoteBtn" class="btn-primary">Save</button>
-					<button id="cancelEditBtn" class="btn-secondary">Cancel</button>
+					<div class="note-content">
+						{{ note.formattedContent|raw }}
+					</div>
+
+					<div class="note-actions">
+						{% if is_granted('ROLE_ADMIN') or note.user.id == app.user.id %}
+							<form action="{{ path('note_delete', {'id': note.id}) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete-note' ~ note.id) }}">
+								<button type="submit" class="btn-delete">
+									<i class="fas fa-trash"></i>
+									Delete
+								</button>
+							</form>
+						{% endif %}
+
+						{% if is_granted('ROLE_MENTOR') %}
+							<div class="feedback-form">
+								<textarea class="feedback-input" placeholder="Add feedback..."></textarea>
+								<button class="add-feedback" data-note-id="{{ note.id }}">Add Feedback</button>
+							</div>
+						{% endif %}
+					</div>
 				</div>
-			</div>
-
-
-			<div
-				class="notes-grid" id="notesGrid"><!-- Notes will be loaded here via JavaScript -->
-			</div>
-
-
-			<div class="pagination-controls">
-				<button id="prevPageBtn" disabled>Previous</button>
-				<span id="pageInfo">Page 1</span>
-				<button id="nextPageBtn">Next</button>
-			</div>
-		</main>
+			{% endfor %}
+		</div>
 	</div>
-
 {% endblock %}
