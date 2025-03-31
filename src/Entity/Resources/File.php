@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Upload;
+namespace App\Entity\Resources;
 
 use App\Entity\User;
 use App\Entity\Resources\Project;

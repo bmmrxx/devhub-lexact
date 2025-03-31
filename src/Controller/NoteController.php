@@ -81,7 +81,7 @@ class NoteController extends AbstractController
         // Haal een notitie op met geformateerde inhoud
         $note = $em->getRepository(Note::class)->find($id);
         if (!$note) {
-            return new JsonResponse(['error' => 'Note not found'], 404);
+            return new JsonResponse(['error' => 'Notitie niet gevonden'], 404);
         }
 
         return new JsonResponse([

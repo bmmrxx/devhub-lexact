@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\HomeController;
-use App\Entity\Upload\File;
+use App\Entity\Resources\File;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -48,7 +48,6 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('/', 'fas fa-list');
-        // yield MenuItem::linkToCrud('Code Snippet', 'fas fa-list', CodeSnippet::class);
         yield MenuItem::linkToCrud('File', 'fas fa-list', File::class);
     }
 }

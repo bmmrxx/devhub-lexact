@@ -5,6 +5,7 @@
 @import url("site-nav.css");
 @import url("settings.css");
 @import url("note.css");
+@import url("profile.css");
 
 body {
   background-color: skyblue;

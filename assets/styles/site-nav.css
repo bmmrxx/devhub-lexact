@@ -11,6 +11,7 @@
   flex-direction: column;
   padding: 1rem;
   width: 200px;
+  height: 80vh;
 }
 
 .site-nav-list {
