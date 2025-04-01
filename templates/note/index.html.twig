@@ -4,55 +4,47 @@
 {% endblock %}
 
 {% block body %}
-	<div class="notes-container">
-		<div class="note-form">
-			<select id="noteCategory">
-				<option value="note">Note</option>
-				<option value="question">Question</option>
-			</select>
-			<input type="text" id="noteTitle" placeholder="Title">
-			<textarea id="noteContent" placeholder="Write your note here... Use (language//code) for code blocks"></textarea>
-			<button id="saveNote">Save</button>
+	<div class="note-list">
+		<div class="notes-header">
+			<a href="{{ path('note_create') }}" class="btn btn-primary">Maak een nieuwe notitie</a>
 		</div>
+		{% for note in notes %}
 
-		<div class="notes-list">
-			{% for note in notes %}
-				<div class="note-card" data-category="{{ note.category }}">
-					<div class="note-header">
-						<h3>{{ note.title }}</h3>
-						<span class="note-meta">
-							{{ note.created_at|date('Y-m-d H:i') }}
-							|
-							{{ note.user.name }}
-							|
-							{{ note.category }}
-						</span>
-					</div>
-
-					<div class="note-content">
-						{{ note.formattedContent|raw }}
-					</div>
-
-					<div class="note-actions">
-						{% if is_granted('ROLE_ADMIN') or note.user.id == app.user.id %}
-							<form action="{{ path('note_delete', {'id': note.id}) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-								<input type="hidden" name="_token" value="{{ csrf_token('delete-note' ~ note.id) }}">
-								<button type="submit" class="btn-delete">
-									<i class="fas fa-trash"></i>
-									Delete
+			<div class="note-card">
+				<h5>{{ note.title }}</h5>
+				<div class="note-meta">
+					{{ note.created_at|date('Y-m-d H:i') }}
+					|
+					{{ note.category|join(', ') }}
+					{% if note.user == app.user or is_granted('ROLE_ADMIN') %}
+						<form method="post" action="{{ path('note_delete', {'id': note.id}) }}" class="d-inline">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ note.id) }}">
+							<div class="note-actions">
+								{% if note.user == app.user or is_granted('ROLE_ADMIN') %}
+									<a href="{{ path('note_edit', {'id': note.id}) }}" class="btn btn-warning btn-sm">Bewerken</a>
+								{% endif %}
+								<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Weet je zeker dat je deze notitie wilt verwijderen?')">
+									Verwijderen
 								</button>
-							</form>
-						{% endif %}
-
-						{% if is_granted('ROLE_MENTOR') %}
-							<div class="feedback-form">
-								<textarea class="feedback-input" placeholder="Add feedback..."></textarea>
-								<button class="add-feedback" data-note-id="{{ note.id }}">Add Feedback</button>
 							</div>
-						{% endif %}
-					</div>
+
+						</form>
+					{% endif %}
 				</div>
-			{% endfor %}
-		</div>
+				<div class="note-content">
+
+					{{ note.getFormattedContent()|raw }}</div>
+
+				<div class="note-actions">
+
+					<a href="{{ path('note_get', {'id': note.id}) }}" class="btn btn-info btn-sm">Bekijken</a>
+				</div>
+			</div>
+
+		{% else %}
+			<div class="alert alert-info">Geen notities gevonden</div>
+
+		{% endfor %}
+
 	</div>
 {% endblock %}
