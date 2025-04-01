@@ -3,7 +3,7 @@
 namespace App\Entity\Resources;
 
 use App\Entity\User;
-use App\Entity\Upload\File;
+use App\Entity\Resources\File;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,6 +16,7 @@ class Project
     #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
     private ?int $id;
 
+    // Relatie naar User entity
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user;
@@ -25,11 +26,6 @@ class Project
 
     #[ORM\Column(type: Types::STRING)]
     private string $name;
-
-    public function __construct()
-    {
-
-    }
 
     public function getId(): ?int
     {

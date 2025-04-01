@@ -17,6 +17,7 @@ class File
     #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
     private ?int $id;
 
+    // Relatie naar User entity
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user;
@@ -28,14 +29,14 @@ class File
     #[ORM\Column(type: Types::STRING)]
     private string $name;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\Datetime $created_at;
-
     #[ORM\Column(type: Types::TEXT)]
     private string $file_path;
 
     #[ORM\Column(type: Types::STRING, length: 50)]
     private string $file_type;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\Datetime $created_at;
 
     public function __construct()
     {
