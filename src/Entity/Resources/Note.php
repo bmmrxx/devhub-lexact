@@ -88,25 +88,19 @@ class Note
         return $this;
     }
 
+    public function getCategory(): array
+    {
+        return $this->category;
+    }
+
     public function setCategory(array $category): self
     {
-        // Zet elke categorie om naar een geldige enum waarde
-        // - tryFrom() geeft null voor ongeldige waarden
-        // - De ?-> operator (nullsafe) voorkomt errors bij null
-        $validCategory = array_map(
-            fn($cat) => NoteCategoryEnum::tryFrom($cat)?->value,
-            $category
-        );
-        
-        // Filter lege/null waarden uit de array
-        $this->category = array_filter($validCategory);
-        
+        $this->category = $category;
         return $this;
     }
 
     public function hasCategory(NoteCategoryEnum $category): bool
     {
-        // Controleer of categorie bestaat
         return in_array($category->value, $this->category, true);
     }
 
