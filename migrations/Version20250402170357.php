@@ -7,25 +7,25 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20250402170357 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add visibility column to project table';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE project ADD visibility TINYINT(1) DEFAULT 1 NOT NULL');
+        $this->addSql('ALTER TABLE project ADD visibility VARCHAR(20) DEFAULT \'INTERN\' NOT NULL');
+
+        // Optioneel: converteer bestaande boolean naar enum waarden
+        $this->addSql("UPDATE project SET visibility = CASE 
+            WHEN visibility = 1 THEN 'ADMIN'
+            ELSE 'INTERN' END");
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE project DROP visibility');
     }
 }

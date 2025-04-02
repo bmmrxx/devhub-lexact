@@ -2,8 +2,6 @@
 
 namespace App\Controller\Admin;
 
-namespace App\Controller\Admin;
-
 use App\Entity\User;
 use App\Enum\UserRoleEnum;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;

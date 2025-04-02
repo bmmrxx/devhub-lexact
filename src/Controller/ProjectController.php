@@ -24,25 +24,25 @@ class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/project/new', name: 'project_new', methods: ['GET', 'POST'])]
+    #[Route('/project/new', name: 'project_new', methods: ['GET', 'POST']),]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $project = new Project();
-        $project->setUser($this->getUser());
-
         $form = $this->createForm(ProjectType::class, $project);
+        
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            $project->setUser($this->getUser());
             $em->persist($project);
             $em->flush();
 
-            $this->addFlash('success', 'Project "' . $project->getName() . '" is aangemaakt!');
-            return $this->redirectToRoute('project_show', ['id' => $project->getId()]);
+            $this->addFlash('success', 'Project aangemaakt!');
+            return $this->redirectToRoute('project_index');
         }
-
+        
         return $this->render('project/new.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
