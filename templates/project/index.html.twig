@@ -1,6 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Projects
+{% block title %}Mijn Projecten
+
+
 {% endblock %}
 
-{% block body %}{% endblock %}
+{% block body %}
+	<h1>Mijn Projecten</h1>
+	<a href="{{ path('project_new') }}" class="btn btn-primary mb-3">Nieuw Project</a>
+
+
+	<div class="list-group">
+		{% for project in projects %}
+			<div class="list-group-item">
+				<div class="d-flex justify-content-between">
+					<div>
+						<h5>{{ project.name }}</h5>
+						<small>
+							{% set visibilityLabels = {0: 'Privé', 1: 'Intern', 2: 'Mentor'} %}
+							{{ visibilityLabels[project.visibility] ?? 'Onbekend' }}
+						</small>
+					</div>
+					<div>
+						<a href="{{ path('project_show', {'id': project.id}) }}" class="btn btn-sm btn-info">Bekijken</a>
+						<a href="{{ path('project_edit', {'id': project.id}) }}" class="btn btn-sm btn-warning">Bewerken</a>
+						<form method="post" action="{{ path('project_delete', {'id': project.id}) }}" class="d-inline">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ project.id) }}">
+							<button class="btn btn-sm btn-danger" onclick="return confirm('Weet je het zeker?')">Verwijderen</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<div class="alert alert-info">Nog geen projecten</div>
+		{% endfor %}
+	</div>
+{% endblock %}
+

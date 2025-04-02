@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bewerk
+	{{ project.name }}
+{% endblock %}
+
+{% block body %}
+	<h1>Bewerk Project</h1>
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	<button class="btn btn-primary">Opslaan</button>
+	<a href="{{ path('project_show', {'id': project.id}) }}" class="btn btn-secondary">Annuleren</a>
+	{{ form_end(form) }}
+{% endblock %}
