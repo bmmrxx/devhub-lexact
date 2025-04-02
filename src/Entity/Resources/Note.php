@@ -19,7 +19,12 @@ class Note
     // Relatie naar User entity
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
+
     private ?User $user;
+
+    #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'notes')]
+    #[ORM\JoinColumn(name: 'project_id', referencedColumnName: 'id', nullable: false)]
+    private Project $project;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $title;
@@ -77,12 +82,12 @@ class Note
         return $this;
     }
 
-    public function getCreated_at(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->created_at;
     }
 
-    public function setCreated_at(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
         return $this;
@@ -113,10 +118,10 @@ class Note
             $mentor->getId(),  // Mentor ID voor referentie
             $feedback          // Feedback tekst
         );
-        
+
         // Voeg toe aan bestaande content
         $this->content .= $feedbackBlock;
-        
+
         return $this;
     }
 
@@ -131,10 +136,10 @@ class Note
                 // $matches[2] = code
                 $language = strtolower(trim($matches[1]));
                 $code = htmlspecialchars(trim($matches[2]));
-                
+
                 // Genereer HTML voor code block
                 return "<pre class='code-block' data-language='{$language}'>"
-                     . "<code>{$code}</code></pre>";
+                    . "<code>{$code}</code></pre>";
             },
             $this->content
         );
@@ -147,10 +152,10 @@ class Note
                 // $matches[2] = feedback tekst
                 $userId = (int) $matches[1];
                 $feedbackContent = nl2br(htmlspecialchars(trim($matches[2])));
-                
+
                 // Genereer HTML voor feedback block
                 return "<div class='feedback-block' data-user-id='{$userId}'>"
-                     . "{$feedbackContent}</div>";
+                    . "{$feedbackContent}</div>";
             },
             $content
         );
