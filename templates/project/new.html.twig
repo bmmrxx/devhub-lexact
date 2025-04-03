@@ -1,30 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nieuw Project
-{% endblock %}
+{% block title %}Nieuw Project{% endblock %}
 
 {% block body %}
-	<div class="container mt-4">
-		<div class="row">
-			<div class="col-md-8 mx-auto">
-				<div class="card">
-					<div class="card-header bg-primary text-white">
-						<h2 class="h5 mb-0">Nieuw Project</h2>
-					</div>
-					<div class="card-body">
-						{{ form_start(form) }}
-						{{ form_widget(form) }}
-						<button class="btn btn-primary">Opslaan</button>
-						{{ form_end(form) }}
-						<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-							<a href="{{ path('project_index') }}" class="btn btn-secondary me-md-2">
-								Annuleren
-							</a>
-						</div>
-						{{ form_end(form) }}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="container mt-4">
+    <h1>Nieuw Project</h1>
+    
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        
+        <button type="submit" class="btn btn-primary">
+            Opslaan
+        </button>
+        <a href="{{ path('project_index') }}" class="btn btn-secondary">
+            Annuleren
+        </a>
+    {{ form_end(form) }}
+</div>
 {% endblock %}

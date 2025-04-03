@@ -13,7 +13,9 @@
 			<div class="note-card">
 				<h5>{{ note.title }}</h5>
 				<div class="note-meta">
-					{{ note.created_at|date('Y-m-d H:i') }}
+{# {{ note.created_at|date('Y-m-d') }} #}
+
+
 					|
 					{{ note.category|join(', ') }}
 					{% if note.user == app.user or is_granted('ROLE_ADMIN') %}

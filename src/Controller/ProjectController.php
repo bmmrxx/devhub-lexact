@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Resources\Project;
-use App\Form\ProjectType;
+use App\Form\ProjectForm;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\Project\ProjectCreator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ProjectController extends AbstractController
 {
+    public function __construct(private readonly ProjectCreator $projectCreator)
+    {
+
+    }
     #[Route('/project', name: 'project_index', methods: ['GET'])]
     public function index(EntityManagerInterface $em): Response
     {
@@ -25,17 +30,19 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/project/new', name: 'project_new', methods: ['GET', 'POST']),]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request): Response
     {
-        $project = new Project();
-        $form = $this->createForm(ProjectType::class, $project);
+        $users = [$this->getUser()];
+        $name = $request->request->all()['project_form']['name'];
+        // $users = $request->request->get('user');
+        // dd($name['project_form']['name']);
+
+        $form = $this->createForm(ProjectForm::class);
         
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-            $project->setUser($this->getUser());
-            $em->persist($project);
-            $em->flush();
+            $project = $this->projectCreator->create($name, $users);
 
             $this->addFlash('success', 'Project aangemaakt!');
             return $this->redirectToRoute('project_index');
@@ -57,7 +64,7 @@ class ProjectController extends AbstractController
     #[Route('/project/{id}/edit', name: 'project_edit', methods: ['GET', 'POST'])]
     public function edit(Project $project, Request $request, EntityManagerInterface $em): Response
     {
-        $form = $this->createForm(ProjectType::class, $project);
+        $form = $this->createForm(ProjectForm::class, $project);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

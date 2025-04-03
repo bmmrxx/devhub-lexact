@@ -27,9 +27,6 @@ class Project
     #[ORM\Column(type: Types::STRING)]
     private string $name;
 
-    #[ORM\Column(type: Types::STRING, length: 20)]
-    private string $visibility = 'INTERN';
-
     public function getId(): ?int
     {
         return $this->id;
@@ -57,14 +54,4 @@ class Project
         return $this;
     }
 
-    public function getVisibility(): string
-    {
-        return $this->visibility;
-    }
-
-    public function setVisibility(string $visibility): self
-    {
-        $this->visibility = $visibility;
-        return $this;
-    }
 }

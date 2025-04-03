@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Resources\Note;
+use App\Entity\Resources\Project;
 use App\Enum\NoteCategoryEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,17 +39,22 @@ class NoteController extends AbstractController
             $title = $request->request->get('title');
             $content = $request->request->get('content');
             $category = $request->request->get('category');
+            $projectId = $request->request->get('project');
 
-            if (empty($title) || empty($content) || empty($category)) {
+            if (empty($title) || empty($content) || empty($category) || empty($projectId)) {
                 $this->addFlash('error', 'Alle velden moeten ingevuld worden!');
                 return $this->redirectToRoute('note_create');
             }
+
+            $project = $this->em->getRepository(Project::class)->findOneBy(['id'=> $projectId]);
+            // dd($project);
 
             $note = new Note();
             $note->setUser($user)
                 ->setTitle($title)
                 ->setContent($content)
-                ->setCategory([$category]);
+                ->setCategory([$category])
+                ->setProject($project);
 
             $this->em->persist($note);
             $this->em->flush();
@@ -57,7 +63,10 @@ class NoteController extends AbstractController
             return $this->redirectToRoute('app_notes');
         }
 
-        return $this->render('note/create.html.twig');
+        return $this->render('note/create.html.twig',
+        [
+            'projects' => $this->em->getRepository(Project::class)->findAll(),
+        ]);
     }
 
     #[Route('/{id}/feedback', name: 'note_add_feedback', methods: ['POST'])]

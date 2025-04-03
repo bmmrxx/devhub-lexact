@@ -16,10 +16,6 @@
 				<div class="d-flex justify-content-between">
 					<div>
 						<h5>{{ project.name }}</h5>
-						<small>
-							{% set visibilityLabels = {0: 'Privé', 1: 'Intern', 2: 'Mentor'} %}
-							{{ visibilityLabels[project.visibility] ?? 'Onbekend' }}
-						</small>
 					</div>
 					<div>
 						<a href="{{ path('project_show', {'id': project.id}) }}" class="btn btn-sm btn-info">Bekijken</a>
@@ -36,4 +32,3 @@
 		{% endfor %}
 	</div>
 {% endblock %}
-
