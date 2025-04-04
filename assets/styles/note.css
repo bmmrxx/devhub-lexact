@@ -51,6 +51,17 @@
   font-size: 0.875rem;
 }
 
+.btn-cancel {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+.btn-cancel:hover {
+  color: #fff;
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
 /* Alert */
 
 /* Forms */

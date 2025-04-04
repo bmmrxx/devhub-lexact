@@ -6,17 +6,16 @@
 {% block body %}
 	<div class="note-list">
 		<div class="notes-header">
-			<a href="{{ path('note_create') }}" class="btn btn-primary">Maak een nieuwe notitie</a>
+			<a href="{{ path('note_new') }}" class="btn btn-primary">Maak een nieuwe notitie</a>
 		</div>
 		{% for note in notes %}
 
 			<div class="note-card">
 				<h5>{{ note.title }}</h5>
-				<div class="note-meta">
-{# {{ note.created_at|date('Y-m-d') }} #}
+				<div
+					class="note-meta">
+					{# {{ note.created_at }} #}
 
-
-					|
 					{{ note.category|join(', ') }}
 					{% if note.user == app.user or is_granted('ROLE_ADMIN') %}
 						<form method="post" action="{{ path('note_delete', {'id': note.id}) }}" class="d-inline">

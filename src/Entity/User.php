@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
-use App\Entity\Resources\UserProject;
+use App\Entity\Resources\Project;
 use App\Enum\UserRoleEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\ManyToMany;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -35,8 +36,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
-    #[ORM\OneToMany(targetEntity: UserProject::class, mappedBy: 'user')]
-    private Collection $userProjects;
+    #[ManyToMany(targetEntity: Project::class, mappedBy: 'users')]
+    private Collection $projects;
 
     // Transient field for password handling
     private ?string $plainPassword = null;
@@ -44,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->created_at = new \DateTime();
-        $this->userProjects = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function getId(): int
@@ -99,11 +100,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        
+
         if (empty($roles)) {
             $roles[] = UserRoleEnum::INTERN->value;
         }
-        
+
         return array_unique($roles);
     }
 
@@ -111,7 +112,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $validRoles = array_map(fn($role) => UserRoleEnum::tryFrom($role)?->value, $roles);
         $this->roles = array_filter($validRoles);
-        
+
         return $this;
     }
 
@@ -120,14 +121,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (!in_array($role->value, $this->roles, true)) {
             $this->roles[] = $role->value;
         }
-        
+
         return $this;
     }
 
     public function removeRole(UserRoleEnum $role): self
     {
         $this->roles = array_filter($this->roles, fn($r) => $r !== $role->value);
-        
+
         return $this;
     }
 
@@ -155,37 +156,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->plainPassword = $plainPassword;
     }
-
-    public function getUserProjects(): Collection
+    public function addProject(Project $project): void
     {
-        return $this->userProjects;
+        $this->projects[] = $project;
     }
-
-    public function addUserProject(UserProject $userProject): self
+    public function removeProject(Project $project): self
     {
-        if (!$this->userProjects->contains($userProject)) {
-            $this->userProjects[] = $userProject;
-            $userProject->setUser($this);
-        }
+        $this->projects->removeElement($project);
         return $this;
     }
-
-    public function removeUserProject(UserProject $userProject): self
+    public function getProjects(): Collection
     {
-        if ($this->userProjects->removeElement($userProject)) {
-            // Only nullify if this user is still set
-            if ($userProject->getUser() === $this) {
-                $userProject->setUser(null);
-            }
-        }
-        return $this;
-    }
-    public function getProjects(): array
-    {
-        $projects = [];
-        foreach ($this->userProjects as $userProject) {
-            $projects[] = $userProject->getProject();
-        }
-        return $projects;
+        return $this->projects;
     }
 }

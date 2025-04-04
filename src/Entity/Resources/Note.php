@@ -22,7 +22,7 @@ class Note
 
     private ?User $user;
 
-    #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'notes')]
+    #[ORM\ManyToOne(targetEntity: Project::class)]
     #[ORM\JoinColumn(name: 'project_id', referencedColumnName: 'id', nullable: false)]
     private Project $project;
 

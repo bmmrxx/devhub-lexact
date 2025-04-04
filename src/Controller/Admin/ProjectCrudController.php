@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Resources\Project;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -15,17 +16,25 @@ class ProjectCrudController extends AbstractCrudController
         return Project::class;
     }
 
+
     public function configureFields(string $pageName): iterable
     {
-        // Haal alle users op met entity de entity manager, maak een array van choices met daar in alle users
+        // // Haal alle users op met entity de entity manager, maak een array van choices met daar in alle users
+        // $users = $this->em->getRepository(User::class)->findAll();
+        // $userChoices = [];
+        // foreach ($users as $user) {
+        //     $userChoices[$user->getName()] = $user;
+        // }
+
         return [
             TextField::new('name'),
-            ChoiceField::new('visibility')
-                ->setChoices([
-                    'Admin' => UserRoleEnum::ADMIN->value,
-                    'Mentor' => UserRoleEnum::MENTOR->value,
-                    'Intern' => UserRoleEnum::INTERN->value
-                ])
+            TextField::new('user.name', 'Leden'),
+            // ChoiceField::new('users')
+            //     ->setChoices($userChoices)
+            //     ->setLabel('Leden')
+            //     ->setRequired(false)
+            //     ->setHelp('Selecteer de leden van het project')
+            //     ->allowMultipleChoices()
         ];
     }
 }

@@ -14,15 +14,15 @@ class NoteCrudController extends AbstractCrudController
     {
         return Note::class;
     }
-
-    /*
     public function configureFields(string $pageName): iterable
     {
         return [
             IdField::new('id'),
             TextField::new('title'),
-            TextEditorField::new('description'),
+            TextEditorField::new('content'),
+            TextField::new('project.name', 'Project'),
+            //Maak hier een choicefield van, alle users uit de database ophalen en deze in een array zetten
+            TextField::new('user.name', 'Creator'),
         ];
     }
-    */
 }

@@ -21,9 +21,9 @@ class File
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private User $user;
 
-    #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'files')]
-    #[ORM\JoinColumn(name: 'project_id', referencedColumnName: 'id', nullable: false)]
-    private Project $project;
+    // #[ORM\ManyToOne(targetEntity: Project::class, 'files')]
+    // #[ORM\JoinColumn(name: 'project_id', referencedColumnName: 'id', nullable: false)]
+    // private Project $project;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $name;
@@ -59,16 +59,16 @@ class File
         $this->user = $user;
         return $this;
     }
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
+    // public function getProject(): ?Project
+    // {
+    //     return $this->project;
+    // }
 
-    public function setProject(Project $project): self
-    {
-        $this->project = $project;
-        return $this;
-    }
+    // public function setProject(Project $project): self
+    // {
+    //     $this->project = $project;
+    //     return $this;
+    // }
 
     public function getName(): string
     {

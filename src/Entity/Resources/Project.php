@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'project')]
@@ -18,37 +20,25 @@ class Project
     #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
     private ?int $id;
 
-    // Relatie naar User entity
-    #[ORM\OneToMany(targetEntity: UserProject::class, mappedBy: 'project')]
-    private Collection $userProjects;
-
-    #[ORM\OneToMany(targetEntity: File::class, mappedBy: 'project')]
-    private $file;
-
-    #[ORM\Column(type: Types::STRING)]
-    private string $name;
+    #[ManyToMany(targetEntity: User::class, inversedBy: 'projects')]
+    #[JoinTable(name: 'user_project')]
+    private Collection $users;
 
     public function __construct()
     {
-        $this->userProjects = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
+
+    // #[ORM\OneToMany(targetEntity: File::class, mappedBy: 'project')]
+    // private $file;
+
+    #[ORM\Column(type: Types::STRING)]
+    private string $name;
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-        return $this;
-    }
-
     public function getName(): string
     {
         return $this->name;
@@ -59,32 +49,21 @@ class Project
         $this->name = $name;
         return $this;
     }
-
-    /**
-     * @return Collection|UserProject[]
-     */
-    public function getUserProjects(): Collection
+    public function addUser(User $user): void
     {
-        return $this->userProjects;
+        $user->addProject($this);
+        $this->users[] = $user;
     }
 
-    public function addUserProject(UserProject $userProject): self
+    public function removeUser(User $user): self
     {
-        if (!$this->userProjects->contains($userProject)) {
-            $this->userProjects[] = $userProject;
-            $userProject->setProject($this);
-        }
+        $this->users->removeElement($user);
         return $this;
     }
 
-    public function removeUserProject(UserProject $userProject): self
+    public function getUsers(): Collection
     {
-        if ($this->userProjects->removeElement($userProject)) {
-            // Only nullify if this user is still set
-            if ($userProject->getUser() === $this) {
-                $userProject->setUser(null);
-            }
-        }
-        return $this;
+        return $this->users;
     }
 }
+;

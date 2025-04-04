@@ -25,7 +25,8 @@
             Login
         </button>
         <div class="forget">
-            <a href="{{ path('app_password_reset') }}">Forgot password?</a>
+<a href="{{ path('app_forgot_password_request') }}">Forgot password?</a>
+
         </div>
         {% if error %}
             <div class="login-page error" href="{{ path('app_login') }}">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

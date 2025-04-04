@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Resources\Project;
+use App\Entity\Resources\User; // Make sure to import the User entity
 use App\Form\ProjectForm;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Project\ProjectCreator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,41 +15,63 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ProjectController extends AbstractController
 {
-    public function __construct(private readonly ProjectCreator $projectCreator)
+    public function __construct(private readonly EntityManagerInterface $em)
     {
-
     }
+
     #[Route('/project', name: 'project_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $em): Response
+    public function index(): Response
     {
-        $projects = $em->getRepository(Project::class)->findBy(
-            ['user' => $this->getUser()],
-        );
+        $user = $this->getUser();
+
+        $projects = $user->getProjects();
 
         return $this->render('project/index.html.twig', [
             'projects' => $projects,
         ]);
     }
 
-    #[Route('/project/new', name: 'project_new', methods: ['GET', 'POST']),]
-    public function new(Request $request): Response
+    #[Route('/project/new', name: 'project_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, ProjectCreator $projectCreator): Response
     {
-        $users = [$this->getUser()];
-        $name = $request->request->all()['project_form']['name'];
-        // $users = $request->request->get('user');
-        // dd($name['project_form']['name']);
-
         $form = $this->createForm(ProjectForm::class);
-        
         $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) {
-            $project = $this->projectCreator->create($name, $users);
 
-            $this->addFlash('success', 'Project aangemaakt!');
-            return $this->redirectToRoute('project_index');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+
+            // Start with current user
+            $users = new ArrayCollection();
+            $users->add($this->getUser());
+
+            // Add selected users if any
+            $selectedUsers = $form->get('users')->getData();
+
+            if ($selectedUsers && !$selectedUsers->isEmpty()) {
+                foreach ($selectedUsers as $user) {
+                    if ($user instanceof User) {
+                        $user->add($user);
+                    }
+                }
+            }
+
+            // Remove duplicates by user ID
+            $uniqueUsers = [];
+            foreach ($users as $user) {
+                $uniqueUsers[$user->getId()] = $user;
+            }
+
+
+            try {
+                $this->em->persist($formData);
+                $this->em->flush();
+                $this->addFlash('success', 'Project aangemaakt!');
+                return $this->redirectToRoute('project_index');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Er is een fout opgetreden: ' . $e->getMessage());
+            }
         }
-        
+
         return $this->render('project/new.html.twig', [
             'form' => $form->createView()
         ]);

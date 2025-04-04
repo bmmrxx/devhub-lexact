@@ -3,7 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Resources\Project;
-use App\Enum\UserRoleEnum;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,7 +21,14 @@ class ProjectForm extends AbstractType
                     'placeholder' => 'Voer projectnaam in',
                     'class' => 'form-control'
                 ]
-                ]);
+            ])
+            ->add('users', EntityType::class, [
+                'class' => User::class,
+                'multiple' => true,
+                'required' => false,
+                'choice_label' => 'name',
+
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
