@@ -8,15 +8,6 @@ enum UserRoleEnum: string
     case MENTOR = 'ROLE_MENTOR';
     case INTERN = 'ROLE_INTERN';
 
-    public static function getVisibilityOptions(): array
-    {
-        return [
-            self::ADMIN->value => 'Alleen beheerders',
-            self::MENTOR->value => 'Mentors + beheerders',
-            self::INTERN->value => 'Iedereen',
-        ];
-    }
-
     public function getBadgeClass(): string
     {
         return match ($this) {

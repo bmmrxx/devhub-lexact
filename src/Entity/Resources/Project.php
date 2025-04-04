@@ -4,6 +4,8 @@ namespace App\Entity\Resources;
 
 use App\Entity\User;
 use App\Entity\Resources\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,15 +19,19 @@ class Project
     private ?int $id;
 
     // Relatie naar User entity
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
-    private ?User $user;
+    #[ORM\OneToMany(targetEntity: UserProject::class, mappedBy: 'project')]
+    private Collection $userProjects;
 
     #[ORM\OneToMany(targetEntity: File::class, mappedBy: 'project')]
     private $file;
 
     #[ORM\Column(type: Types::STRING)]
     private string $name;
+
+    public function __construct()
+    {
+        $this->userProjects = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -54,4 +60,31 @@ class Project
         return $this;
     }
 
+    /**
+     * @return Collection|UserProject[]
+     */
+    public function getUserProjects(): Collection
+    {
+        return $this->userProjects;
+    }
+
+    public function addUserProject(UserProject $userProject): self
+    {
+        if (!$this->userProjects->contains($userProject)) {
+            $this->userProjects[] = $userProject;
+            $userProject->setProject($this);
+        }
+        return $this;
+    }
+
+    public function removeUserProject(UserProject $userProject): self
+    {
+        if ($this->userProjects->removeElement($userProject)) {
+            // Only nullify if this user is still set
+            if ($userProject->getUser() === $this) {
+                $userProject->setUser(null);
+            }
+        }
+        return $this;
+    }
 }

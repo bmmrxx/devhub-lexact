@@ -31,7 +31,7 @@ class NoteController extends AbstractController
         ]);
     }
 
-    #[Route('/create', name: 'note_create', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'note_new', methods: ['GET', 'POST'])]
     public function create(Request $request): Response
     {
         if ($request->isMethod('POST')) {
@@ -43,7 +43,7 @@ class NoteController extends AbstractController
 
             if (empty($title) || empty($content) || empty($category) || empty($projectId)) {
                 $this->addFlash('error', 'Alle velden moeten ingevuld worden!');
-                return $this->redirectToRoute('note_create');
+                return $this->redirectToRoute('note_new');
             }
 
             $project = $this->em->getRepository(Project::class)->findOneBy(['id'=> $projectId]);
@@ -63,7 +63,8 @@ class NoteController extends AbstractController
             return $this->redirectToRoute('app_notes');
         }
 
-        return $this->render('note/create.html.twig',
+        return $this->render(
+            'note/new.html.twig',
         [
             'projects' => $this->em->getRepository(Project::class)->findAll(),
         ]);

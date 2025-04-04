@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\UserProject;
 use App\Enum\UserRoleEnum;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -15,27 +18,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
-    private ?int $id;
+    private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
-    private ?string $name;
+    private ?string $name = null;
 
     #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
-    private ?string $email;
+    private ?string $email = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
-    private ?string $password;
+    private ?string $password = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP', 'updatable' => false])]
     private \DateTime $created_at;
 
-    // Opslag van rollen als JSON array
     #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
+
+    #[ORM\OneToMany(targetEntity: UserProject::class, mappedBy: 'user')]
+    private Collection $userProjects;
+
+    // Transient field for password handling
+    private ?string $plainPassword = null;
 
     public function __construct()
     {
         $this->created_at = new \DateTime();
+        $this->userProjects = new ArrayCollection();
     }
 
     public function getId(): int
@@ -89,10 +98,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        // Ervoor zorgen dat een gebruiker altijd een rol heeft
         $roles = $this->roles;
         
-        // Als er geen role is gespcificeerd is het standaard een intern
         if (empty($roles)) {
             $roles[] = UserRoleEnum::INTERN->value;
         }
@@ -136,7 +143,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function getUserProjects(): Collection
+    {
+        return $this->userProjects;
+    }
+
+    public function addUserProject(UserProject $userProject): self
+    {
+        if (!$this->userProjects->contains($userProject)) {
+            $this->userProjects[] = $userProject;
+            $userProject->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeUserProject(UserProject $userProject): self
+    {
+        if ($this->userProjects->removeElement($userProject)) {
+            // Only nullify if this user is still set
+            if ($userProject->getUser() === $this) {
+                $userProject->setUser(null);
+            }
+        }
+        return $this;
+    }
+    public function getProjects(): array
+    {
+        $projects = [];
+        foreach ($this->userProjects as $userProject) {
+            $projects[] = $userProject->getProject();
+        }
+        return $projects;
     }
 }
