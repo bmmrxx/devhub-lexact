@@ -14,9 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/notes')]
 class NoteController extends AbstractController
 {
-    public function __construct(
-        private EntityManagerInterface $em
-    ) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     #[Route('', name: 'app_notes', methods: ['GET'])]
     public function index(): Response
@@ -46,7 +46,7 @@ class NoteController extends AbstractController
                 return $this->redirectToRoute('note_new');
             }
 
-            $project = $this->em->getRepository(Project::class)->findOneBy(['id'=> $projectId]);
+            $project = $this->em->getRepository(Project::class)->findOneBy(['id' => $projectId]);
             // dd($project);
 
             $note = new Note();
@@ -65,16 +65,17 @@ class NoteController extends AbstractController
 
         return $this->render(
             'note/new.html.twig',
-        [
-            'projects' => $this->em->getRepository(Project::class)->findAll(),
-        ]);
+            [
+                'projects' => $this->em->getRepository(Project::class)->findAll(),
+            ]
+        );
     }
 
     #[Route('/{id}/feedback', name: 'note_add_feedback', methods: ['POST'])]
     public function addFeedback(int $id, Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_MENTOR');
-        
+
         $note = $this->em->getRepository(Note::class)->find($id);
         if (!$note) {
             $this->addFlash('error', 'Notitie niet gevonden');
@@ -121,7 +122,7 @@ class NoteController extends AbstractController
     public function getNote(int $id): Response
     {
         $note = $this->em->getRepository(Note::class)->find($id);
-        
+
         if (!$note) {
             throw $this->createNotFoundException('Notitie niet gevonden!');
         }
@@ -133,44 +134,44 @@ class NoteController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'note_edit', methods: ['GET', 'POST'])]
-public function edit(int $id, Request $request): Response
-{
-    $note = $this->em->getRepository(Note::class)->find($id);
-    
-    if (!$note) {
-        $this->addFlash('error', 'Notitie niet gevonden');
-        return $this->redirectToRoute('app_notes');
-    }
+    public function edit(int $id, Request $request): Response
+    {
+        $note = $this->em->getRepository(Note::class)->find($id);
 
-    // Alleen eigenaar of admin mag bewerken
-    if ($note->getUser()->getId() !== $this->getUser()->getId() && !$this->isGranted('ROLE_ADMIN')) {
-        $this->addFlash('error', 'Geen rechten om deze notitie te bewerken');
-        return $this->redirectToRoute('app_notes');
-    }
-
-    if ($request->isMethod('POST')) {
-        $title = $request->request->get('title');
-        $content = $request->request->get('content');
-        $category = $request->request->get('category');
-
-        if (empty($title) || empty($content) || empty($category)) {
-            $this->addFlash('error', 'Titel, inhoud en categorie zijn verplicht');
-            return $this->redirectToRoute('note_edit', ['id' => $id]);
+        if (!$note) {
+            $this->addFlash('error', 'Notitie niet gevonden');
+            return $this->redirectToRoute('app_notes');
         }
 
-        $note->setTitle($title)
-             ->setContent($content)
-             ->setCategory([$category]);
+        // Alleen eigenaar of admin mag bewerken
+        if ($note->getUser()->getId() !== $this->getUser()->getId() && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Geen rechten om deze notitie te bewerken');
+            return $this->redirectToRoute('app_notes');
+        }
 
-        $this->em->flush();
+        if ($request->isMethod('POST')) {
+            $title = $request->request->get('title');
+            $content = $request->request->get('content');
+            $category = $request->request->get('category');
 
-        $this->addFlash('success', 'Notitie succesvol bijgewerkt');
-        return $this->redirectToRoute('note_get', ['id' => $id]);
+            if (empty($title) || empty($content) || empty($category)) {
+                $this->addFlash('error', 'Titel, inhoud en categorie zijn verplicht');
+                return $this->redirectToRoute('note_edit', ['id' => $id]);
+            }
+
+            $note->setTitle($title)
+                ->setContent($content)
+                ->setCategory([$category]);
+
+            $this->em->flush();
+
+            $this->addFlash('success', 'Notitie succesvol bijgewerkt');
+            return $this->redirectToRoute('note_get', ['id' => $id]);
+        }
+
+        return $this->render('note/edit.html.twig', [
+            'note' => $note,
+            'categories' => NoteCategoryEnum::cases()
+        ]);
     }
-
-    return $this->render('note/edit.html.twig', [
-        'note' => $note,
-        'categories' => NoteCategoryEnum::cases()
-    ]);
-}
 }

@@ -24,6 +24,10 @@ class Project
     #[JoinTable(name: 'user_project')]
     private Collection $users;
 
+    // Relatie tussen note en project (De file feature is nog in ontwikkeling)
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'project')]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -31,6 +35,11 @@ class Project
 
     // #[ORM\OneToMany(targetEntity: File::class, mappedBy: 'project')]
     // private $file;
+
+    public function __toString(): string
+    {
+        return $this->getName() ?? (string) $this->getId();
+    }
 
     #[ORM\Column(type: Types::STRING)]
     private string $name;
@@ -47,6 +56,31 @@ class Project
     public function setName(string $name): self
     {
         $this->name = $name;
+        return $this;
+    }
+
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes[] = $note;
+            $note->setProject($this);
+        }
+        return $this;
+    }
+
+    public function removeNote(Note $note): self
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getProject() === $this) {
+                $note->setProject(null);
+            }
+        }
         return $this;
     }
     public function addUser(User $user): void

@@ -20,8 +20,6 @@
 .btn-primary {
   background-color: #3498db;
   color: white;
-  margin-top: 3rem;
-  margin-left: 1rem;
 }
 
 .btn-primary:hover {
@@ -29,7 +27,7 @@
 }
 
 .btn-secondary {
-  background-color: #95a5a6;
+  background-color: #588588;
   color: white;
 }
 
@@ -92,6 +90,10 @@
 textarea.form-control {
   min-height: 150px;
   resize: vertical;
+}
+
+select.form-control {
+  min-height: 50px;
 }
 
 /* Note List */

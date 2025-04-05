@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Resources\Project;
-use App\Entity\Resources\User; // Make sure to import the User entity
+use App\Entity\Resources\User;
 use App\Form\ProjectForm;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,11 +40,11 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
 
-            // Start with current user
+            // Voeg de huidige gebruiker toe
             $users = new ArrayCollection();
             $users->add($this->getUser());
 
-            // Add selected users if any
+            // Voeg de geselecteerde gebruikers toe
             $selectedUsers = $form->get('users')->getData();
 
             if ($selectedUsers && !$selectedUsers->isEmpty()) {
@@ -55,7 +55,7 @@ class ProjectController extends AbstractController
                 }
             }
 
-            // Remove duplicates by user ID
+            // Verwijder dubbele gebruikers
             $uniqueUsers = [];
             foreach ($users as $user) {
                 $uniqueUsers[$user->getId()] = $user;

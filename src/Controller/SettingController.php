@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SettingController extends AbstractController
 {
-    #[Route('/settings', name: 'settings')]
+    #[Route('/settings', name: 'app_settings')]
     public function settingsPage(): Response
     {
         return $this->render(

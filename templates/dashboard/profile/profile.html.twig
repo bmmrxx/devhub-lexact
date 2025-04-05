@@ -1,7 +1,82 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}My Profile
+{% endblock %}
+
+
 
 {% block body %}
-<h2> Welkom op je profiel pagina! </h2>
+<div class="profile-container">
+	<div class="profile-header">
+		<div class="avatar-container">
+			<div class="avatar" style="background-color: {{ random(['#4e73df', '#1cc88a', '#36b9cc']) }}">
+				{{ app.user.name|first|upper }}
+			</div>
+			<button class="edit-avatar-btn">
+				<i class="fas fa-camera"></i>
+			</button>
+		</div>
+		<h1>{{ app.user.name }}</h1>
+	</li>
+	{% set user_role = app.user.roles|filter(role => role != 'ROLE_USER')|first|default('ROLE_USER') %}
+	{% set readable_role = user_role|replace({'ROLE_': ''})|lower|capitalize %}
+
+	<a class="edit-profile-btn" href="{{ is_granted('ROLE_ADMIN') ? path('admin') : '#' }}">
+		{% if is_granted('ROLE_ADMIN') %}
+			<p class="role-badge">Ga naar admin panel</p>
+		{% else %}
+			<p class="role-badge">Je bent ingelogd als
+				{{ readable_role }}</p>
+		{% endif %}
+	</a>
+</div>
+<div class="profile-details">
+	<div class="detail-card">
+		<h3>
+			<i class="fas fa-info-circle"></i>
+			Basic Info</h3>
+		<div class="detail-row">
+			<span>Email:</span>
+			<span>{{ app.user.email }}</span>
+		</div>
+		<div class="detail-row">
+			<span>Joined:</span>
+			<span>{{ app.user.createdAt|date('d M Y') }}</span>
+		</div>
+	</div>
+
+	{# <div class="stats-container">
+																		<div class="stat-card">
+																			<i class="fas fa-file-alt"></i>
+																			<h4>{{ note_count }}</h4>
+																			<p>Notes Created</p>
+																		</div>
+																		<div class="stat-card">
+																			<i class="fas fa-file-upload"></i>
+																			<h4>{{ file_count }}</h4>
+																			<p>Files Uploaded</p>
+																		</div>
+																		<div class="stat-card">
+																			<i class="fas fa-comments"></i>
+																			<h4>{{ feedback_count }}</h4>
+																			<p>Feedback Received</p>
+																		</div>
+																	</div>
+																</div>
+															</div><div class="detail-card">
+															<h3>
+																<i class="fas fa-project-diagram"></i>
+																My Projects</h3>
+															<div class="projects-grid">
+																{% for project in app.user_project.project|slice(0, 3) %}
+																	<div class="project-chip" style="background-color: {{ random(['#f6c23e', '#e74a3b', '#858796']) }}">
+																		{{ project.name }}
+																	</div>
+																{% endfor %}
+																{% if app.user_project.project|length > 3 %}
+																	<div class="project-chip more">+{{ app.user.project|length - 3 }}
+																		more</div>
+																{% endif %}
+															</div></div></div> #}
 {% endblock %}
+
