@@ -25,7 +25,7 @@ class Project
     private Collection $users;
 
     // Relatie tussen note en project (De file feature is nog in ontwikkeling)
-    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'project')]
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'project', cascade: ['remove'])]
     private Collection $notes;
 
     public function __construct()
@@ -82,6 +82,11 @@ class Project
             }
         }
         return $this;
+    }
+
+    public function getNotesCount(): int
+    {
+        return $this->notes->count();
     }
     public function addUser(User $user): void
     {

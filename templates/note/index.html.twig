@@ -7,7 +7,9 @@
 	<main>
 		<div class="note-list">
 			<div class="notes-header">
-				<a href="{{ path('note_new') }}" class="btn btn-primary">Maak een nieuwe notitie</a>
+				<a href="{{ path('note_new') }}" class="btn btn-primary mt-3 ml-2">Maak een nieuwe notitie</a>
+
+
 			</div>
 			{% for note in notes %}
 
@@ -18,10 +20,14 @@
 						|
 
 						{{ note.category|join(', ') }}
+						|
+						{% if note.project %}
+							<a href="{{ path('project_show', {'id': note.project.id}) }}">{{ note.project.name }}</a>
+						{% endif %}
+
 						{% if note.user == app.user or is_granted('ROLE_ADMIN') %}
 							<form method="post" action="{{ path('note_delete', {'id': note.id}) }}" class="d-inline">
 								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ note.id) }}">
-
 
 							</form>
 						{% endif %}

@@ -7,13 +7,17 @@
 
 {% block body %}
 	<h1>Mijn Projecten</h1>
-	<a href="{{ path('project_new') }}" class="btn btn-primary mb-3">Nieuw Project</a>
+<a href="{{ path('project_new') }}" class="btn btn-primary mb-3 ml-2">Nieuw Project</a>
+
 
 
 	<div class="list-group">
 		{% for project in projects %}
-			<div class="list-group-item">
-				<div class="d-flex justify-content-between">
+<div class="list-group-item">
+
+<div class="d-flex justify-content-between ml-2">
+
+
 					<div>
 						<h5>{{ project.name }}</h5>
 					</div>
@@ -22,7 +26,8 @@
 						<a href="{{ path('project_edit', {'id': project.id}) }}" class="btn btn-sm btn-warning">Bewerken</a>
 						<form method="post" action="{{ path('project_delete', {'id': project.id}) }}" class="d-inline">
 							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ project.id) }}">
-							<button class="btn btn-sm btn-danger" onclick="return confirm('Weet je het zeker?')">Verwijderen</button>
+<button class="btn btn-sm btn-danger">Verwijderen</button>
+
 						</form>
 					</div>
 				</div>

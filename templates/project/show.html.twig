@@ -1,33 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ project.name }}
+	{{ project.name }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ project.name }}</h1>
-    
-    <h2>Users</h2>
-    <ul>
-        {% for user in project.users %}
-            <li>{{ user.name }}</li>
-        {% endfor %}
-    </ul>
-    
-    <h2>Notes</h2>
-    {% for note in project.notes %}
-        <div class="note">
-            <h3>{{ note.title }}</h3>
-            <p>By: {{ note.user.name }}</p>
-            <p>{{ note.getFormattedContent()|raw }}</p>
-            <small>{{ note.createdAt|date('Y-m-d H:i') }}</small>
-        </div>
-    {% else %}
-        <p>Dit project heeft nog geen notities.</p>
-    {% endfor %}
-    <div class="mt-3 mb-3 ml-3">
-        <a href="{{ path('project_edit', {'id': project.id}) }}" class="btn btn-primary">Bewerken</a>
-        <a href="{{ path('project_index') }}" class="btn btn-secondary">Terug</a>
-    </div>
+	<h1>{{ project.name }}</h1>
+
+	<h2>Teamleden</h2>
+	<ul>
+		{% for user in project.users %}
+			<li>{{ user.name }}</li>
+		{% endfor %}
+	</ul>
+
+	<h2>Notities</h2>
+	{% for note in project.notes %}
+		<div class="note">
+			<h3>{{ note.title }}</h3>
+			<p>Door::
+				{{ note.user.name }}</p>
+			<p>{{ note.getFormattedContent()|raw }}</p>
+			<small>{{ note.createdAt|date('Y-m-d H:i') }}</small>
+		</div>
+	{% else %}
+		<p>Dit project heeft nog geen notities.</p>
+	{% endfor %}
+	<div class="mt-3 mb-3 ml-3">
+		<a href="{{ path('note_new', {'project': project.id}) }}" class="btn btn-primary">Notitie toevoegen</a>
+		<a href="{{ path('project_edit', {'id': project.id}) }}" class="btn btn-primary">Bewerken</a>
+		<a href="{{ path('project_index') }}" class="btn btn-secondary">Terug</a>
+	</div>
 
 {% endblock %}

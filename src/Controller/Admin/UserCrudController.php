@@ -11,6 +11,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Validator\Constraints\Length;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -32,7 +34,15 @@ class UserCrudController extends AbstractCrudController
     {
         yield TextField::new('name');
         yield EmailField::new('email');
-        yield TextField::new('password')->onlyOnForms();
+        yield TextField::new('plainPassword')
+            ->setFormType(PasswordType::class)
+            ->setFormTypeOptions([
+                'constraints' => [
+                    new Length(['min' => 8, 'minMessage' => 'Minimaal 8 karakters']),
+                ],
+                'attr' => ['minlength' => 8]
+            ])
+            ->onlyOnForms();
 
         yield ChoiceField::new('roles')
             ->setChoices($this->getRoleChoices())
@@ -44,7 +54,7 @@ class UserCrudController extends AbstractCrudController
                 'ROLE_MENTOR' => 'warning',
             ]);
 
-        yield DateTimeField::new('created_at')
+        yield DateTimeField::new('createdAt')
             ->hideOnForm();
     }
 

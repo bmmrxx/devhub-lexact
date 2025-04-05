@@ -107,10 +107,40 @@ class ProjectController extends AbstractController
     #[Route('/project/{id}/delete', name: 'project_delete', methods: ['POST'])]
     public function delete(Project $project, Request $request, EntityManagerInterface $em): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $project->getId(), $request->request->get('_token'))) {
+        if (!$this->isCsrfTokenValid('delete' . $project->getId(), $request->request->get('_token'))) {
+            error_log('CSRF token invalid');
+            $this->addFlash('error', 'Ongeldig CSRF token. Probeer het opnieuw.');
+            return $this->redirectToRoute('project_index');
+        }
+
+        $confirmed = $request->request->get('confirm') === 'yes';
+        $hasNotes = !$project->getNotes()->isEmpty();
+
+        error_log('Confirmed: ' . ($confirmed ? 'yes' : 'no'));
+        error_log('Has notes: ' . ($hasNotes ? 'yes' : 'no'));
+
+        // Toon bevestiging als nodig
+        if ($hasNotes && !$confirmed) {
+            return $this->render('project/delete_confirm.html.twig', [
+                'project' => $project,
+                'hasNotes' => $hasNotes,
+                'csrf_token' => $request->request->get('_token')
+            ]);
+        }
+
+        try {
             $em->remove($project);
             $em->flush();
-            $this->addFlash('success', 'Project succesvol verwijderd!');
+            error_log('Project succesvol verwijderd');
+
+            $message = $hasNotes
+                ? 'Project en alle bijbehorende bestanden succesvol verwijderd!'
+                : 'Project succesvol verwijderd!';
+
+            $this->addFlash('success', $message);
+        } catch (\Exception $e) {
+            error_log('Deletion error: ' . $e->getMessage());
+            $this->addFlash('error', 'Fout bij verwijderen project: ' . $e->getMessage());
         }
 
         return $this->redirectToRoute('project_index');
