@@ -26,7 +26,7 @@ Voor het clonen van de repository verzoek ik u om het volgende command te gebrui
 
 `git clone git@github.com:bmmrxx/devhub-lexact.git`
 
-Mocht u hier problemen mee ondervinden dan kunt u deze repository downloaden via de volgende link:
+Dan kunt u het zip bestand downloaden 
 
 ## Installeren van de dependencies
 
