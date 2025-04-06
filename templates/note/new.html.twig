@@ -29,16 +29,28 @@
 			</select>
 		</div>
 
-{% if projects is empty %}
-            <div class="alert alert-warning mt-4">
-                <h4 class="alert-heading">Geen projecten gevonden</h4>
-                <p>Je moet eerst een project aanmaken voordat je een notitie kunt maken.</p>
-                <hr>
-                <a href="{{ path('project_new') }}" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Nieuw Project Aanmaken
-                </a>
-            </div>
-        {% endif %}
+		<div class="form-group mt-3">
+
+			{% if projects is empty %}
+				<div class="alert mt-4">
+					<h4 class="alert-heading">Geen projecten gevonden</h4>
+					<p>Je moet eerst een project aanmaken voordat je een notitie kunt maken.</p>
+					<hr>
+					<a href="{{ path('project_new') }}" class="btn btn-primary">
+						Nieuw Project Aanmaken</a>
+				</div>
+
+				<i class="fas fa-plus"></i>
+			{% else %}
+				<div class="form-group">
+					<label for="project">Project</label>
+					<select id="project" name="project" class="form-control" required>
+						{% for project in projects %}
+							<option value="{{ project.id }}">{{ project.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			{% endif %}
 
 		</div>
 
@@ -51,7 +63,6 @@
 				Annuleren
 			</a>
 		</div>
-
 
 	</form>
 {% endblock %}

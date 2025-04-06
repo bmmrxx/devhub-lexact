@@ -13,7 +13,9 @@
 			</div>
 			{% for note in notes %}
 
-				<div class="note-card">
+<div class="note">
+
+
 					<h5>{{ note.title }}</h5>
 					<div class="note-meta">
 						<small>{{ note.createdAt|date('Y-m-d H:i') }}</small>
@@ -44,9 +46,17 @@
 						{% if note.user == app.user or is_granted('ROLE_ADMIN') %}
 							<a href="{{ path('note_edit', {'id': note.id}) }}" class="btn btn-warning btn-sm">Bewerken</a>
 						{% endif %}
-						<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Weet je zeker dat je deze notitie wilt verwijderen?')">
-							Verwijderen
-						</button>
+<div class="note-actions d-flex justify-content-end">
+	<form action="{{ path('note_delete', {'id': note.id}) }}" method="post" onsubmit="return confirm('Weet je zeker dat je deze notitie wilt verwijderen?');">
+		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ note.id) }}">
+		<button type="submit" class="btn btn-danger btn-sm">
+			<i class="fas fa-trash"></i>
+			Verwijderen
+		</button>
+
+</form></div>
+
+
 					</div>
 				</div>
 
