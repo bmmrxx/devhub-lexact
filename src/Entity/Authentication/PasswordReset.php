@@ -15,6 +15,7 @@ class PasswordReset
     #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
     private ?int $id;
 
+    // Relatie naar User entity
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user;

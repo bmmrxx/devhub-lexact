@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notities
+{% endblock %}
+
+{% block body %}
+	<main class="notes-app">
+		<div class="notes-container">
+			<div class="notes-header">
+				<h1>
+					Notities</h1>
+				<a href="{{ path('note_new') }}" class="btn btn-primary">
+					<i class="fas fa-plus"></i>
+					Nieuwe notitie
+				</a>
+			</div>
+
+			<div class="notes-grid">
+				{% for note in notes %}
+					<div class="note-card">
+						<div class="note-card-header">
+							<h3>{{ note.title }}</h3>
+							<div class="note-meta">
+								<span class="meta-item">
+									<i class="far fa-calendar-alt"></i>
+									{{ note.createdAt|date('Y-m-d H:i') }}
+								</span>
+								{% if note.category|length > 0 %}
+									<span class="meta-item">
+										<i class="fas fa-tags"></i>
+										{{ note.category|join(', ') }}
+									</span>
+								{% endif %}
+								<span class="meta-item">
+									<i class="fas fa-user"></i>
+									{{ note.user.name }}
+								</span>
+								{% if note.project %}
+									<span class="meta-item">
+										<i class="fas fa-project-diagram"></i>
+										<a href="{{ path('project_show', {'id': note.project.id}) }}">{{ note.project.name }}</a>
+									</span>
+								{% endif %}
+							</div>
+						</div>
+
+						{% if note.user == app.user or is_granted('ROLE_ADMIN') %}
+							<div class="note-card-actions">
+								<a href="{{ path('note_get', {'id': note.id}) }}" class="btn btn-sm btn-info">
+									Bekijken
+								</a>
+								<a href="{{ path('note_edit', {'id': note.id}) }}" class="btn btn-sm btn-warning">
+									<i class="fas fa-edit"></i>
+									Bewerken
+								</a>
+								<form action="{{ path('note_delete', {'id': note.id}) }}" method="post" class="d-inline">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ note.id) }}">
+									<button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Weet je zeker dat je deze notitie wilt verwijderen?')">
+										<i class="fas fa-trash"></i>
+										Verwijderen
+									</button>
+								</form>
+							</div>
+						{% endif %}
+					</div>
+				{% else %}
+					<div class="no-notes">
+						<p>Er zijn nog geen notities aangemaakt.</p>
+						<a href="{{ path('note_new') }}" class="btn btn-primary">
+							<i class="fas fa-plus"></i>
+							Maak je eerste notitie
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</main>
+{% endblock %}

@@ -3,9 +3,13 @@
 namespace App\Entity\Resources;
 
 use App\Entity\User;
-use App\Entity\Upload\File;
+use App\Entity\Resources\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'project')]
@@ -16,37 +20,34 @@ class Project
     #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
     private ?int $id;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
-    private ?User $user;
+    #[ManyToMany(targetEntity: User::class, inversedBy: 'projects')]
+    #[JoinTable(name: 'user_project')]
+    private Collection $users;
 
-    #[ORM\OneToMany(targetEntity: File::class, mappedBy: 'project')]
-    private $file;
-
-    #[ORM\Column(type: Types::STRING)]
-    private string $name;
+    // Relatie tussen note en project (De file feature is nog in ontwikkeling)
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'project', cascade: ['remove'])]
+    private Collection $notes;
 
     public function __construct()
     {
-
+        $this->users = new ArrayCollection();
     }
+
+    // #[ORM\OneToMany(targetEntity: File::class, mappedBy: 'project')]
+    // private $file;
+
+    public function __toString(): string
+    {
+        return $this->getName() ?? (string) $this->getId();
+    }
+
+    #[ORM\Column(type: Types::STRING)]
+    private string $name;
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-        return $this;
-    }
-
     public function getName(): string
     {
         return $this->name;
@@ -57,4 +58,51 @@ class Project
         $this->name = $name;
         return $this;
     }
+
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes[] = $note;
+            $note->setProject($this);
+        }
+        return $this;
+    }
+
+    public function removeNote(Note $note): self
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getProject() === $this) {
+                $note->setProject(null);
+            }
+        }
+        return $this;
+    }
+
+    public function getNotesCount(): int
+    {
+        return $this->notes->count();
+    }
+    public function addUser(User $user): void
+    {
+        $user->addProject($this);
+        $this->users[] = $user;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
+        return $this;
+    }
+
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
 }
+;

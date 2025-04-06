@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ note.title }}
+{% endblock %}
+
+{% block body %}
+<div class="note-detail-container">
+	<article class="note-detail">
+		<div class="note-header">
+			<h1 class="note-title">{{ note.title }}</h1>
+			<div class="note-meta">
+				<span class="meta-item">
+					<i class="fas fa-user"></i>
+					Gemaakt door
+
+{{ note.user.name }}</span><span class="meta-item">
+<i class="far fa-calendar-alt"></i>
+{{ note.createdAt|date('Y-m-d H:i') }}</span>{% if note.category|length > 0 %}
+<span class="meta-item">
+	<i class="fas fa-tags"></i>
+	{{ note.category|join(', ') }}</span>{% endif %}</div>
+
+			</div>
+
+			<div class="note-content">
+				{{ note.getFormattedContent()|raw }}
+			</div>
+
+{# Feedback #}
+{% if app.user and app.user.id != note.user.id and note.project %}
+	{# Controleer of huidige gebruiker lid is van hetzelfde project #}
+	{% if app.user in note.project.users or is_granted('ROLE_ADMIN') %}
+		<div class="feedback-block">
+			<h3>
+				Voeg feedback toe</h3>
+			<form method="post" action="{{ path('note_add_feedback', {'id': note.id}) }}">
+				<input type="hidden" name="_token" value="{{ csrf_token('feedback' ~ note.id) }}">
+				<div class="form-group">
+
+<textarea name="feedback" class="form-control" rows="3" required></textarea></div>
+
+<button type="submit" class="btn btn-primary">
+	Sla feedback op
+</button></form>
+
+</div>{% endif %}
+
+			{% endif %}
+
+<div class="note-actions">
+
+				{% if note.user.id == app.user.id or is_granted('ROLE_ADMIN') %}
+<a href="{{ path('note_edit', {'id': note.id}) }}" class="btn btn-warning">
+	<i class="fas fa-edit"></i>
+	Bewerken
+</a>
+
+				{% endif %}
+<a href="{{ path('app_notes') }}" class="btn btn-secondary">
+	<i class="fas fa-arrow-left"></i>
+	Terug naar notities
+</a></div></article>
+
+</div>
+
+
+{% endblock %}

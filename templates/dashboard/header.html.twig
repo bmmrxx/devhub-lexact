@@ -2,12 +2,14 @@
 	<nav class="navbar navbar-expand-lg navbar-light fixed-top mask-custom shadow-0">
 		<div class="container-fluid">
 
-			<a class="navbar-brand" href="#!">
+			<a class="navbar-brand" href="{{ path('home') }}">
+
 				<span style="color: #404a99;">Devhub</span>
 				<span><img src="{{ asset('styles/images/logo-lexact-web-crop.png') }}" alt="logo-lexact" width="100" height="25"></span>
 			</a>
 
-			<button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
 				<i class="fas fa-bars"></i>
 			</button>
 
@@ -17,28 +19,24 @@
 						<a class="nav-link" href="{{ path('home') }}">Dashboard</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ path('profile') }}">Profile</a>
+						<a class="nav-link" href="{{ path('app_update_profile') }}">Profiel</a>
+
 					</li>
 					<li class="nav-item">
-<a class="nav-link" href="{{ path('file') }}">Notes</a>
+						<a class="nav-link" href="{{ path('app_notes') }}">Notities</a>
 
 
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ path('settings') }}">Settings</a>
+						<a class="nav-link" href="{{ path('app_settings') }}">Instellingen</a>
+
+
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
 					</li>
-					<li class="nav-item">
-						{% if app.user %}
-							<div class="nav-link">
-								You are logged in as
-								{{ app.user.userIdentifier }}
-								
-							</div>
-						{% endif %}
-					</li>
+
+
 				</ul>
 			</div>
 		</div>

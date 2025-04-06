@@ -1,11 +1,24 @@
-@import url("navbar.css");
+@import url("header.css");
 @import url("login.css");
 @import url("home.css");
 @import url("footer.css");
 @import url("site-nav.css");
+@import url("settings.css");
+@import url("note.css");
+@import url("note-view.css");
+@import url("profile.css");
+@import url("project.css");
+@import url("contact.css");
 
 body {
   background-color: skyblue;
   padding-top: 50px;
+  font-family: "Inter", Helvetica, Arial, Lucida, sans-serif;
+  font-size: 12px;
+}
+
+main {
+  margin-top: 25px;
+  min-height: calc(100vh - 120px);
   font-family: "Inter", Helvetica, Arial, Lucida, sans-serif;
 }

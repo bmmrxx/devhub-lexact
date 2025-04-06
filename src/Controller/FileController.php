@@ -12,7 +12,7 @@ class FileController extends AbstractController
     public function filePage(): Response
     {
         return $this->render(
-            'dashboard/upload/file.html.twig',
+            'dashboard/file/index.html.twig',
         );
     }
 }

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Entity\Upload;
+namespace App\Entity\Resources;
 
 use App\Entity\User;
-use App\Entity\Resources\Project;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'file')]
@@ -17,25 +16,28 @@ class File
     #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
     private ?int $id;
 
+    // Relatie naar User entity
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
-    private ?User $user;
+    private User $user;
 
-    #[ORM\ManyToOne(targetEntity: Project::class)]
-    #[ORM\JoinColumn(name: 'project_id', referencedColumnName: 'id', nullable: false)]
-    private ?Project $project;
+    // #[ORM\ManyToOne(targetEntity: Project::class, 'files')]
+    // #[ORM\JoinColumn(name: 'project_id', referencedColumnName: 'id', nullable: false)]
+    // private Project $project;
 
-    #[ORM\Column(type: Types::STRING)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $name;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\Datetime $created_at;
 
     #[ORM\Column(type: Types::TEXT)]
     private string $file_path;
 
     #[ORM\Column(type: Types::STRING, length: 50)]
     private string $file_type;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private \DateTimeInterface $created_at;
+    
+    private ?SymfonyFile $uploadedFile;
 
     public function __construct()
     {
@@ -57,16 +59,16 @@ class File
         $this->user = $user;
         return $this;
     }
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
+    // public function getProject(): ?Project
+    // {
+    //     return $this->project;
+    // }
 
-    public function setProject(Project $project): self
-    {
-        $this->project = $project;
-        return $this;
-    }
+    // public function setProject(Project $project): self
+    // {
+    //     $this->project = $project;
+    //     return $this;
+    // }
 
     public function getName(): string
     {
@@ -109,6 +111,23 @@ class File
     public function setCreatedAt(\Datetime $created_at): self
     {
         $this->created_at = $created_at;
+        return $this;
+    }
+
+    public function getUploadedFile(): ?SymfonyFile
+    {
+        return $this->uploadedFile;
+    }
+
+    public function setUploadedFile(?SymfonyFile $uploadedFile): self
+    {
+        $this->uploadedFile = $uploadedFile;
+        
+        // Update het file type automatisch
+        if ($uploadedFile) {
+            $this->file_type = $uploadedFile->guessExtension() ?? 'unknown';
+        }
+        
         return $this;
     }
 }

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nieuw Project
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<h1>Nieuw Project</h1>
+
+        {{ form_start(form) }}
+            {{ form_row(form.name) }}
+            
+            <div class="form-group">
+                {{ form_label(form.users) }}
+                {{ form_widget(form.users, {
+                    'attr': {
+                        'class': 'form-control',
+                    }
+                }) }}
+                <small class="form-text .text-white">
+                    Gebruik Ctrl (Windows) of Cmd (Mac) om meerdere gebruikers te selecteren
+                </small>
+            </div>
+            
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">
+                    Opslaan
+                </button>
+                <a href="{{ path('project_index') }}" class="btn btn-secondary ml-2">
+                    Annuleren
+                </a>
+            </div>
+        {{ form_end(form) }}
+	</div>
+{% endblock %}

@@ -3,7 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Controller\HomeController;
-use App\Entity\Upload\File;
+use App\Entity\Resources\File;
+use App\Entity\Resources\Note;
+use App\Entity\Resources\Project;
+use App\Entity\User;
+use Dom\Entity;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -14,41 +18,37 @@ use Symfony\Component\HttpFoundation\Response;
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
+    public function __construct(
+        private AdminUrlGenerator $adminUrlGenerator
+    ) {
+    }
+
     public function index(): Response
     {
-        return $this->redirectToRoute('admin_file_index');
-
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-        // 1.1) If you have enabled the "pretty URLs" feature:
-        // return $this->redirectToRoute('admin_user_index');
-        //
-        // 1.2) Same example but using the "ugly URLs" that were used in previous EasyAdmin versions:
-        // $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        // return $this->redirect($adminUrlGenerator->setController(OneOfYourCrudController::class)->generateUrl());
-
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirectToRoute('...');
-        // }
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        // return $this->render('some/path/my-dashboard.html.twig');
+        // Standaard doorverwijzen naar de gebruikers
+        $url = $this->adminUrlGenerator->setController(UserCrudController::class)->generateUrl();
+        return $this->redirect($url);
     }
 
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Control panel');
+            ->setTitle('Beheerpaneel')
+            ->setFaviconPath('favicon.ico')
+            ->setTranslationDomain('admin');
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('/', 'fas fa-list');
-        // yield MenuItem::linkToCrud('Code Snippet', 'fas fa-list', CodeSnippet::class);
-        yield MenuItem::linkToCrud('File', 'fas fa-list', File::class);
+        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+
+        // Correcte koppelingen met juiste entiteiten
+        yield MenuItem::linkToCrud('Gebruikers', 'fa fa-users', User::class);
+        yield MenuItem::linkToCrud('Projecten', 'fa fa-folder', Project::class);
+        yield MenuItem::linkToCrud('Bestanden', 'fa fa-file', File::class);
+        yield MenuItem::linkToCrud('Notities', 'fa fa-sticky-note', Note::class);
+
+        // Link naar frontend
+        yield MenuItem::linkToRoute('Naar website', 'fa fa-external-link', 'home');
     }
 }

@@ -18,14 +18,17 @@
         >
             <div class="remember mb-3">
                 <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me">Remember me</label>
+<label for="_remember_me">Onthoud mij</label>
+
             </div>
 
         <button class="login-page" type="submit">
             Login
         </button>
         <div class="forget">
-            <a href="{{ path('app_password_reset') }}">Forgot password?</a>
+<a href="{{ path('app_forgot_password_request') }}">Wachtwoord vergeten?</a>
+
+
         </div>
         {% if error %}
             <div class="login-page error" href="{{ path('app_login') }}">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
