@@ -21,13 +21,26 @@ class NoteController extends AbstractController
     #[Route('', name: 'app_notes', methods: ['GET'])]
     public function index(): Response
     {
+        $user = $this->getUser();
         $notes = $this->em->getRepository(Note::class)->findBy(
-            ['user' => $this->getUser()],
+            ['user' => $user],
             ['created_at' => 'DESC']
         );
 
+        // Voeg projectnotities toe waar de gebruiker lid van is
+        $projectNotes = $this->em->getRepository(Note::class)->createQueryBuilder('n')
+            ->join('n.project', 'p')
+            ->join('p.users', 'pu')
+            ->where('pu.id = :user AND n.user != :user')
+            ->setParameter('user', $user)
+            ->orderBy('n.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        $allNotes = array_merge($notes, $projectNotes);
+
         return $this->render('note/index.html.twig', [
-            'notes' => $notes
+            'notes' => $allNotes
         ]);
     }
 
@@ -75,7 +88,7 @@ class NoteController extends AbstractController
     public function addFeedback(int $id, Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_MENTOR');
-
+        
         $note = $this->em->getRepository(Note::class)->find($id);
         if (!$note) {
             $this->addFlash('error', 'Notitie niet gevonden');
@@ -95,6 +108,7 @@ class NoteController extends AbstractController
         return $this->redirectToRoute('note_get', ['id' => $id]);
     }
 
+
     #[Route('/{id}/delete', name: 'note_delete', methods: ['POST'])]
     public function delete(int $id, Request $request): Response
     {
@@ -106,8 +120,14 @@ class NoteController extends AbstractController
             return $this->redirectToRoute('app_notes');
         }
 
+        // Controleer CSRF token
+        if (!$this->isCsrfTokenValid('delete' . $note->getId(), $request->request->get('_token'))) {
+            $this->addFlash('error', 'Ongeldig verzoek');
+            return $this->redirectToRoute('app_notes');
+        }
+
         if ($note->getUser()->getId() !== $user->getId() && !$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'niet gemachtigd');
+            $this->addFlash('error', 'Je hebt geen rechten om deze notitie te verwijderen');
             return $this->redirectToRoute('app_notes');
         }
 
@@ -122,9 +142,17 @@ class NoteController extends AbstractController
     public function getNote(int $id): Response
     {
         $note = $this->em->getRepository(Note::class)->find($id);
+        $user = $this->getUser();
 
         if (!$note) {
             throw $this->createNotFoundException('Notitie niet gevonden!');
+        }
+
+        // Controleer of gebruiker eigenaar is OF lid van het project
+        if ($note->getUser()->getId() !== $user->getId()) {
+            if (!$note->getProject() || !$note->getProject()->getUsers()->contains($user)) {
+                throw $this->createAccessDeniedException('Geen toegang tot deze notitie');
+            }
         }
 
         return $this->render('note/view.html.twig', [

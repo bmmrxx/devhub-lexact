@@ -39,7 +39,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ManyToMany(targetEntity: Project::class, mappedBy: 'users')]
     private Collection $projects;
 
-    // Transient field for password handling
     private ?string $plainPassword = null;
 
     public function __construct()
@@ -105,41 +104,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-
         if (empty($roles)) {
             $roles[] = UserRoleEnum::INTERN->value;
         }
-
+        
         return array_unique($roles);
     }
-
+    
     public function setRoles(array $roles): self
     {
-        $validRoles = array_map(fn($role) => UserRoleEnum::tryFrom($role)?->value, $roles);
-        $this->roles = array_filter($validRoles);
-
+        $this->roles = [];
+        foreach ($roles as $role) {
+            $this->addRole($role instanceof UserRoleEnum ? $role : UserRoleEnum::tryFrom($role));
+        }
         return $this;
     }
 
-    public function addRole(UserRoleEnum $role): self
+    public function addRole(UserRoleEnum|string|null $role): self
     {
-        if (!in_array($role->value, $this->roles, true)) {
-            $this->roles[] = $role->value;
+        if (!$role) {
+            return $this;
         }
 
+        $roleValue = $role instanceof UserRoleEnum ? $role->value : UserRoleEnum::tryFrom($role)?->value;
+
+        if ($roleValue && !in_array($roleValue, $this->roles, true)) {
+            $this->roles[] = $roleValue;
+        }
+        
         return $this;
     }
 
-    public function removeRole(UserRoleEnum $role): self
+    public function removeRole(UserRoleEnum|string $role): self
     {
-        $this->roles = array_filter($this->roles, fn($r) => $r !== $role->value);
+        $roleValue = $role instanceof UserRoleEnum ? $role->value : $role;
+        $this->roles = array_filter($this->roles, fn($r) => $r !== $roleValue);
 
         return $this;
     }
 
-    public function hasRole(UserRoleEnum $role): bool
+    public function hasRole(UserRoleEnum|string $role): bool
     {
-        return in_array($role->value, $this->getRoles(), true);
+        $roleValue = $role instanceof UserRoleEnum ? $role->value : $role;
+        return in_array($roleValue, $this->getRoles(), true);
     }
 
     public function getUserIdentifier(): string
@@ -157,10 +164,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->plainPassword;
     }
 
-    public function setPlainPassword(?string $plainPassword): self
+    public function setPlainPassword(?string $plainPassword): void
     {
         $this->plainPassword = $plainPassword;
-        return $this;
     }
     public function addProject(Project $project): void
     {

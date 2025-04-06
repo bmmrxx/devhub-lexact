@@ -8,6 +8,7 @@
 @import url("note-view.css");
 @import url("profile.css");
 @import url("project.css");
+@import url("contact.css");
 
 body {
   background-color: skyblue;

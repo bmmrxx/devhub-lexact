@@ -193,3 +193,5 @@ Ik ben erg blij met hoe de aplicatie er tot nu toe uitziet. Voordat ik dit proje
 6. Mentors en interns speciefiek aan elkaar kunnen koppelen voor een duidelijker beeld van de relatie
 7. Het uitbreiden van de applicatie voor zowel de software development stagaires als de it stagaires
 8. Het beveiligen van de aplicatie voor XSS, de testen, resultaten, conclussies en verbeteringen hiervan kunnen worden terug gevonden bij de onderdelen testen en verbeter voorstellen.
+9. Wachtwoord reset feature afmaken
+10. Remember me feature afmaken
