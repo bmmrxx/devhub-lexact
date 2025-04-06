@@ -77,11 +77,18 @@ class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/project/{id}', name: 'project_show', methods: ['GET'])]
+    #[Route('project/{id}', name: 'project_show', methods: ['GET'])]
     public function show(Project $project): Response
     {
+        $user = $this->getUser();
+
+        // Controleer of gebruiker lid is van het project
+        if (!$project->getUsers()->contains($user) && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Geen toegang tot dit project');
+        }
+
         return $this->render('project/show.html.twig', [
-            'project' => $project,
+            'project' => $project
         ]);
     }
 

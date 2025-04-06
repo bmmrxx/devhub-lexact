@@ -120,14 +120,14 @@ class Note
         return in_array($category->value, $this->category, true);
     }
 
-    public function addFeedback(User $mentor, string $feedback): self
+    public function addFeedback(User $user, string $feedback): self
     {
         // Formatteer feedback als speciaal blok in de content
         // - [FEEDBACK=ID]...[/FEEDBACK] syntax
         $feedbackBlock = sprintf(
             "\n\n[FEEDBACK=%d]%s[END_FEEDBACK]",
-            $mentor->getId(),  // Mentor ID voor referentie
-            $feedback          // Feedback tekst
+            $user->getId(),
+            $feedback
         );
 
         // Voeg toe aan bestaande content

@@ -156,9 +156,9 @@ admin ANY ANY ANY /admin App\Controller\Admin\DashboardController::index()
  admin_user_edit GET|POST|PATCH ANY ANY /admin/user/{entityId}/edit App\Controller\Admin\UserCrudController::edit()  
  admin_user_delete POST ANY ANY /admin/user/{entityId}/delete App\Controller\Admin\UserCrudController::delete()  
  admin_user_detail GET ANY ANY /admin/user/{entityId} App\Controller\Admin\UserCrudController::detail()  
- *app_contact ANY ANY ANY /contact App\Controller\ContactController::index()*
-*app_feedback ANY ANY ANY /feedback App\Controller\FeedbackController::index()*
-*file ANY ANY ANY /file App\Controller\FileController::filePage()*
+ _app_contact ANY ANY ANY /contact App\Controller\ContactController::index()_
+_app_feedback ANY ANY ANY /feedback App\Controller\FeedbackController::index()_
+_file ANY ANY ANY /file App\Controller\FileController::filePage()_
 home ANY ANY ANY / App\Controller\HomeController::homePage()  
  app_notes GET ANY ANY /notes App\Controller\NoteController::index()  
  note_new GET|POST ANY ANY /notes/new App\Controller\NoteController::create()  

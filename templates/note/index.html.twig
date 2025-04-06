@@ -1,71 +1,78 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Notes
+{% block title %}Notities
 {% endblock %}
 
 {% block body %}
-	<main>
-		<div class="note-list">
+	<main class="notes-app">
+		<div class="notes-container">
 			<div class="notes-header">
-				<a href="{{ path('note_new') }}" class="btn btn-primary mt-3 ml-2">Maak een nieuwe notitie</a>
-
-
+				<h1>
+					Notities</h1>
+				<a href="{{ path('note_new') }}" class="btn btn-primary">
+					<i class="fas fa-plus"></i>
+					Nieuwe notitie
+				</a>
 			</div>
-			{% for note in notes %}
 
-<div class="note">
-
-
-					<h5>{{ note.title }}</h5>
-					<div class="note-meta">
-						<small>{{ note.createdAt|date('Y-m-d H:i') }}</small>
-						|
-
-						{{ note.category|join(', ') }}
-						|
-						{% if note.project %}
-							<a href="{{ path('project_show', {'id': note.project.id}) }}">{{ note.project.name }}</a>
-						{% endif %}
+			<div class="notes-grid">
+				{% for note in notes %}
+					<div class="note-card">
+						<div class="note-card-header">
+							<h3>{{ note.title }}</h3>
+							<div class="note-meta">
+								<span class="meta-item">
+									<i class="far fa-calendar-alt"></i>
+									{{ note.createdAt|date('Y-m-d H:i') }}
+								</span>
+								{% if note.category|length > 0 %}
+									<span class="meta-item">
+										<i class="fas fa-tags"></i>
+										{{ note.category|join(', ') }}
+									</span>
+								{% endif %}
+								<span class="meta-item">
+									<i class="fas fa-user"></i>
+									{{ note.user.name }}
+								</span>
+								{% if note.project %}
+									<span class="meta-item">
+										<i class="fas fa-project-diagram"></i>
+										<a href="{{ path('project_show', {'id': note.project.id}) }}">{{ note.project.name }}</a>
+									</span>
+								{% endif %}
+							</div>
+						</div>
 
 						{% if note.user == app.user or is_granted('ROLE_ADMIN') %}
-							<form method="post" action="{{ path('note_delete', {'id': note.id}) }}" class="d-inline">
-								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ note.id) }}">
-
-							</form>
+							<div class="note-card-actions">
+								<a href="{{ path('note_get', {'id': note.id}) }}" class="btn btn-sm btn-info">
+									Bekijken
+								</a>
+								<a href="{{ path('note_edit', {'id': note.id}) }}" class="btn btn-sm btn-warning">
+									<i class="fas fa-edit"></i>
+									Bewerken
+								</a>
+								<form action="{{ path('note_delete', {'id': note.id}) }}" method="post" class="d-inline">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ note.id) }}">
+									<button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Weet je zeker dat je deze notitie wilt verwijderen?')">
+										<i class="fas fa-trash"></i>
+										Verwijderen
+									</button>
+								</form>
+							</div>
 						{% endif %}
 					</div>
-					<div class="note-content">
-
-						{{ note.getFormattedContent()|raw }}</div>
-
-					<div class="note-actions">
-
-						<a href="{{ path('note_get', {'id': note.id}) }}" class="btn btn-info btn-sm mb-2">Bekijken</a>
+				{% else %}
+					<div class="no-notes">
+						<p>Er zijn nog geen notities aangemaakt.</p>
+						<a href="{{ path('note_new') }}" class="btn btn-primary">
+							<i class="fas fa-plus"></i>
+							Maak je eerste notitie
+						</a>
 					</div>
-					<div class="note-actions">
-						{% if note.user == app.user or is_granted('ROLE_ADMIN') %}
-							<a href="{{ path('note_edit', {'id': note.id}) }}" class="btn btn-warning btn-sm">Bewerken</a>
-						{% endif %}
-<div class="note-actions d-flex justify-content-end">
-	<form action="{{ path('note_delete', {'id': note.id}) }}" method="post" onsubmit="return confirm('Weet je zeker dat je deze notitie wilt verwijderen?');">
-		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ note.id) }}">
-		<button type="submit" class="btn btn-danger btn-sm">
-			<i class="fas fa-trash"></i>
-			Verwijderen
-		</button>
-
-</form></div>
-
-
-					</div>
-				</div>
-
-
-			{% else %}
-				<div class="alert alert-info">Geen notities gevonden</div>
-
-			{% endfor %}
-
+				{% endfor %}
+			</div>
 		</div>
 	</main>
 {% endblock %}

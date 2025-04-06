@@ -2,7 +2,8 @@
 	<nav class="navbar navbar-expand-lg navbar-light fixed-top mask-custom shadow-0">
 		<div class="container-fluid">
 
-			<a class="navbar-brand" href="#!">
+			<a class="navbar-brand" href="{{ path('home') }}">
+
 				<span style="color: #404a99;">Devhub</span>
 				<span><img src="{{ asset('styles/images/logo-lexact-web-crop.png') }}" alt="logo-lexact" width="100" height="25"></span>
 			</a>
@@ -18,17 +19,16 @@
 						<a class="nav-link" href="{{ path('home') }}">Dashboard</a>
 					</li>
 					<li class="nav-item">
-<a class="nav-link" href="{{ path('app_update_profile') }}">Profiel</a>
+						<a class="nav-link" href="{{ path('app_update_profile') }}">Profiel</a>
 
 					</li>
 					<li class="nav-item">
-<a class="nav-link" href="{{ path('app_notes') }}">Notities</a>
-
+						<a class="nav-link" href="{{ path('app_notes') }}">Notities</a>
 
 
 					</li>
 					<li class="nav-item">
-<a class="nav-link" href="{{ path('app_settings') }}">Instellingen</a>
+						<a class="nav-link" href="{{ path('app_settings') }}">Instellingen</a>
 
 
 					</li>

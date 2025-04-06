@@ -34,7 +34,7 @@ class UserCrudController extends AbstractCrudController
     {
         yield TextField::new('name');
         yield EmailField::new('email');
-        yield TextField::new('plainPassword')
+        yield TextField::new('password')
             ->setFormType(PasswordType::class)
             ->setFormTypeOptions([
                 'constraints' => [
