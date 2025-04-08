@@ -38,7 +38,6 @@ Run het volgende command om de vereiste dependencies te installeren, zorg ervoor
 - Voer hierna `docker compose up` uit
 - `Open de code in een code editor naar keuze en open een remote window` (attach to running container en selecteer /devhub-lexact-app-1)
 - Voer het volgende comando in de terminal van de remote window uit: `composer install`
-  RUN bin/console cache:clear && d:m:m --no-interaction
 
 ## Configure the database
 
@@ -48,23 +47,27 @@ De database is geconfigureerd met een Docker container. Deze container wordt aut
 
 1. Configureer de database connectie, dit gebeurt tijdens het starten van de Docker container. Ondervind u hier problemen mee? Sluit dan de Docker container af en pas de compose.yaml aan.
    ![Configuratie compose.yaml](./compose-yaml)
-2. Maak de database aan, dit maakt de database met de juiste naam aan.
-   `php bin/console doctrine:database:create`
-3. Maak de tabellen aan, dit maakt de tabellen met de juiste naam en type aan.
-   `php bin/console doctrine:migrations:migrate`
+2. Voer het comando `bin/console doctrine:migrations:diff` uit
+3. Voer het comando `bin/console doctrine:migrations:execute --up 'DoctrineMigrations\Version20250408102459' (Verander de versie naar de versie die is aangemaakt bij het vorige comando)
 4. Het toevoegen van mock data (om het project goed te testen raad ik u aan de query hieronder te gebruiken ). Ik heb bewust gekozen om geen registratie optie te implementeren. Dit omdat het een interne omgeving is voor het bedrijf, daarom kan alleen de admin via het admin panel de gebruikers aanmaken. U heeft daarom ook de optie om alleen een admin account toe te voegen en via het admin panel de rest van de gebruikers aan te maken.
 
 ```
 USE `devhub_lexact_db`;
 
 INSERT INTO `user` (`name`, `email`, `password`, `roles`) VALUES
-  ('Test Intern', 'intern@example.com', '$2a$12$mJBHPQ4Rv39fayJBHaasmuE0wwm5geTL7Dq2Eod70G5taafkGFod2', '["ROLE_INTERN"]'),
-  ('Test Mentor', 'mentor@example.com', '$2a$12$mJBHPQ4Rv39fayJBHaasmuE0wwm5geTL7Dq2Eod70G5taafkGFod2', '["ROLE_MENTOR"]'),
-  ('Test Admin', 'admin@example.com', '$2a$12$mJBHPQ4Rv39fayJBHaasmuE0wwm5geTL7Dq2Eod70G5taafkGFod2', '["ROLE_ADMIN"]');
+  ('Test Intern', 'intern@example.com', 'testpassword', '["ROLE_INTERN"]'),
+  ('Test Mentor', 'mentor@example.com', 'testpassword', '["ROLE_MENTOR"]'),
+  ('Test Admin', 'admin@example.com', 'testpassword', '["ROLE_ADMIN"]');
 
 ```
 
-Omdat ik gebruik maak van bycrypt voor het maken van de wachtwoorden is het nodig het wachtwoord in de query te veranderen. Bij dit voorbeeld is het wachtwoord "testpassword". Deze kunt u gebruiken om in te loggen.
+Omdat ik gebruik maak van bcrypt voor het maken van de wachtwoorden is het nodig het wachtwoord aan te passen nadat deze query is uitgevoerd. Verander de wachtwoorden daarom naar de bcrypte versie;
+
+## bcrypt voor "testpassword"
+
+$2a$12$mJBHPQ4Rv39fayJBHaasmuE0wwm5geTL7Dq2Eod70G5taafkGFod2
+
+
 
 ## Start de applicatie
 
