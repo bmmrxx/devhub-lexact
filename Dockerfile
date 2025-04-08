@@ -1,24 +1,26 @@
 FROM php:latest
 
-# Install PHP extentions
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
     libicu-dev \
+    libzip-dev \
     git \
     curl \
+    unzip \
     libcurl4-openssl-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install mysqli pdo_mysql gd curl intl \
-    && apt-get clean
+    && docker-php-ext-install mysqli pdo_mysql gd curl intl zip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-
-# Configure Git with user email and name (auto sign-in)
-RUN git config --global user.email "mitzbo@outlook.com" \
+# Configure Git
+RUN git config --global --add safe.directory /var/www/html \
+    && git config --global user.email "mitzbo@outlook.com" \
     && git config --global user.name "bmmrxx"
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN bin/console ca:clean && d:m:M --no-interaction 
+RUN bin/console cache:clear && d:m:m --no-interaction
