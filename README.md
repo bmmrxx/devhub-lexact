@@ -47,9 +47,8 @@ De database is geconfigureerd met een Docker container. Deze container wordt aut
 
 1. Configureer de database connectie, dit gebeurt tijdens het starten van de Docker container. Ondervind u hier problemen mee? Sluit dan de Docker container af en pas de compose.yaml aan.
    ![Configuratie compose.yaml](./compose-yaml)
-2. Voer het comando `bin/console doctrine:migrations:diff` uit
-3. Voer het comando `bin/console doctrine:migrations:execute --up 'DoctrineMigrations\Version20250408102459' (Verander de versie naar de versie die is aangemaakt bij het vorige comando)
-4. Het toevoegen van mock data (om het project goed te testen raad ik u aan de query hieronder te gebruiken ). Ik heb bewust gekozen om geen registratie optie te implementeren. Dit omdat het een interne omgeving is voor het bedrijf, daarom kan alleen de admin via het admin panel de gebruikers aanmaken. U heeft daarom ook de optie om alleen een admin account toe te voegen en via het admin panel de rest van de gebruikers aan te maken.
+2. Voer het comando `bin/console doctrine:migrations:execute --up 'DoctrineMigrations\Version20250408102459'`
+3. Het toevoegen van mock data (om het project goed te testen raad ik u aan de query hieronder te gebruiken ). Ik heb bewust gekozen om geen registratie optie te implementeren. Dit omdat het een interne omgeving is voor het bedrijf, daarom kan alleen de admin via het admin panel de gebruikers aanmaken. U heeft daarom ook de optie om alleen een admin account toe te voegen en via het admin panel de rest van de gebruikers aan te maken.
 
 ```
 USE `devhub_lexact_db`;
@@ -63,7 +62,7 @@ INSERT INTO `user` (`name`, `email`, `password`, `roles`) VALUES
 
 Omdat ik gebruik maak van bcrypt voor het maken van de wachtwoorden is het nodig het wachtwoord aan te passen nadat deze query is uitgevoerd. Verander de wachtwoorden daarom naar de bcrypte versie;
 
-## bcrypt voor "testpassword"
+### bcrypt voor "testpassword"
 
 $2a$12$mJBHPQ4Rv39fayJBHaasmuE0wwm5geTL7Dq2Eod70G5taafkGFod2
 
