@@ -19,6 +19,7 @@ Een webaplicatie gebouwd voor stagebegleiders en stagaire(s) bij het bedrijf Lex
 - PHP 8.4.4 (Latest)
 - MySQL or MariaDB
 - Docker Desktop of Docker Engine
+- WSL extentie
 
 ## Start-up guide
 
@@ -26,16 +27,18 @@ Voor het clonen van de repository verzoek ik u om het volgende command te gebrui
 
 `git clone git@github.com:bmmrxx/devhub-lexact.git`
 
-Dan kunt u het zip bestand downloaden 
+Dan kunt u het zip bestand downloaden
 
 ## Installeren van de dependencies
 
 Run het volgende command om de vereiste dependencies te installeren, zorg ervoor dat u in de hoofdmap van de project zit. Dit zal de docker container en vereisten voor het project installeren. Zolang de container actief is zal de applicatie op localhost:8000 bereikbaar zijn.
 
 - `Verander de gegevens van de git config in de ![Dockerfile](./Dockerfile)
-- `docker compose build`
-- `composer install`
-- `docker compose up`
+- Voer het volgende comando uit in de terminal, ga naar de root van de geclonde repository en voer hier uit `docker compose build --no-cache`
+- Voer hierna `docker compose up` uit
+- `Open de code in een code editor naar keuze en open een remote window` (attach to running container en selecteer /devhub-lexact-app-1)
+- Voer het volgende comando in de terminal van de remote window uit: `composer install`
+  RUN bin/console cache:clear && d:m:m --no-interaction
 
 ## Configure the database
 
@@ -124,7 +127,7 @@ Name Method Scheme Host Path Controller
 ---
 
 admin ANY ANY ANY /admin App\Controller\Admin\DashboardController::index()  
- admin_file_index GET ANY ANY /admin/file App\Controller\Admin\FileCrudController::index()  
+ admin*file_index GET ANY ANY /admin/file App\Controller\Admin\FileCrudController::index()  
  admin_file_new GET|POST ANY ANY /admin/file/new App\Controller\Admin\FileCrudController::new()  
  admin_file_batch_delete POST ANY ANY /admin/file/batch-delete App\Controller\Admin\FileCrudController::batchDelete()  
  admin_file_autocomplete GET ANY ANY /admin/file/autocomplete App\Controller\Admin\FileCrudController::autocomplete()  
@@ -156,8 +159,8 @@ admin ANY ANY ANY /admin App\Controller\Admin\DashboardController::index()
  admin_user_edit GET|POST|PATCH ANY ANY /admin/user/{entityId}/edit App\Controller\Admin\UserCrudController::edit()  
  admin_user_delete POST ANY ANY /admin/user/{entityId}/delete App\Controller\Admin\UserCrudController::delete()  
  admin_user_detail GET ANY ANY /admin/user/{entityId} App\Controller\Admin\UserCrudController::detail()  
- _app_contact ANY ANY ANY /contact App\Controller\ContactController::index()_
-_app_feedback ANY ANY ANY /feedback App\Controller\FeedbackController::index()_
+ app_contact ANY ANY ANY /contact App\Controller\ContactController::index()
+*app_feedback ANY ANY ANY /feedback App\Controller\FeedbackController::index()\*
 _file ANY ANY ANY /file App\Controller\FileController::filePage()_
 home ANY ANY ANY / App\Controller\HomeController::homePage()  
  app_notes GET ANY ANY /notes App\Controller\NoteController::index()  
