@@ -32,7 +32,7 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/project/new', name: 'project_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ProjectCreator $projectCreator): Response
+    public function new(Request $request): Response
     {
         $form = $this->createForm(ProjectForm::class);
         $form->handleRequest($request);
